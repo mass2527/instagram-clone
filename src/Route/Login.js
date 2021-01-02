@@ -134,7 +134,7 @@ function Login() {
       console.log('generatedUser>>>', generatedUser.user);
 
       db.collection('users')
-        .doc(generatedUser.user.uid)
+        .doc(generatedUser.user.displayName)
         .set({
           displayName: generatedUser.user.displayName,
           email: generatedUser.user.email,
@@ -169,7 +169,6 @@ function Login() {
 
   return (
     <S.Login>
-      {console.log(users?.some((user) => user.displayName === name))}
       <S.LoginBox>
         <S.Logo
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"

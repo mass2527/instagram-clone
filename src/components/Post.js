@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import styled from 'styled-components';
 import Comment from './Comment';
 import moment from 'moment';
 import FaceIcon from '@material-ui/icons/Face';
 import db from '../firebase/firebase';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import history, { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CommentSender from './CommentSender';
 import PostImageLoader from './PostImageLoader';
-import { viewProfile } from '../utils/util';
+import PostIcons from './PostIcons';
 
 const S = {
   Post: styled.div`
@@ -89,26 +86,6 @@ const S = {
     flex: 1;
   `,
 
-  PostIcons: styled.div`
-    padding: 0px 16px;
-    height: 40px;
-    margin-top: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    > .MuiSvgIcon-root {
-      margin-right: 10px;
-    }
-  `,
-
-  PostHeart: styled.div`
-    padding: 0px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #262626;
-  `,
-
   PostTimestamp: styled.div`
     padding: 0px 16px;
     font-size: 10px;
@@ -136,14 +113,9 @@ function Post({
 }) {
   const user = useSelector(selectUser);
   const [comments, setComments] = useState([]);
-  const [hearts, setHearts] = useState([]);
   const history = useHistory();
   const imageRef = useRef(null);
   const [postImageLoading, setPostImageLoading] = useState(true);
-
-  function handleLoad() {
-    setPostImageLoading(false);
-  }
 
   useEffect(() => {
     db.collection('posts')
@@ -159,35 +131,12 @@ function Post({
         );
       });
 
-    db.collection('posts')
-      .doc(postId)
-      .collection('hearts')
-      .onSnapshot((snapshot) => {
-        setHearts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-      });
-
     imageRef?.current?.addEventListener('load', handleLoad);
     return () => imageRef?.current?.addEventListener('load', handleLoad);
   }, []);
 
-  function clickHeart() {
-    if (!user) return history.push('/login');
-    const liked = hearts.find((heart) => heart?.userId === user?.userId);
-
-    const heartsCollection = db
-      .collection('posts')
-      .doc(postId)
-      .collection('hearts');
-
-    if (liked) {
-      heartsCollection.doc(liked.id).delete();
-    } else {
-      heartsCollection.add({
-        userImageURL: user.userImageURL,
-        displayName: user.displayName,
-        userId: user?.userId,
-      });
-    }
+  function handleLoad() {
+    setPostImageLoading(false);
   }
 
   function clickViewAll() {
@@ -226,17 +175,17 @@ function Post({
       <S.PostImage ref={imageRef} src={imageURL} alt={title} />
 
       <S.PostBottom>
-        <S.PostIcons>
-          {hearts.find((heart) => heart?.userId === user?.userId) ? (
-            <FavoriteIcon color="secondary" onClick={clickHeart} />
-          ) : (
-            <FavoriteBorderIcon onClick={clickHeart} />
-          )}
+        <PostIcons
+          postId={postId}
+          caption={caption}
+          displayName={displayName}
+          imageURL={imageURL}
+          timestamp={timestamp}
+          title={title}
+          userId={userId}
+          userImageURL={userImageURL}
+        />
 
-          <ChatBubbleOutlineIcon onClick={clickViewAll} />
-        </S.PostIcons>
-
-        <S.PostHeart>liked {hearts.length}</S.PostHeart>
         <Comment name={displayName} content={caption} />
         {comments.length >= 3 && (
           <S.CommentLength onClick={clickViewAll}>

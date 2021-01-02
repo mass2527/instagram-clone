@@ -167,11 +167,17 @@ function Profile() {
         setLoading(false);
       });
 
-    // db.collection('posts').onSnapshot((snapshot) => {
-    //   snapshot.docs.map(doc=>doc.collection('hearts').onSnapshot((snapshot) => {
-    //     console.log(snapshot.data());
-    //   });)
-    // });
+    db.collection('users')
+      .doc(userName)
+      .collection('liked')
+      .orderBy('timestampWhenClickLiked', 'desc')
+      .onSnapshot((snapshot) => {
+        setLikedPosts(
+          snapshot.docs?.map((doc) => ({
+            ...doc.data(),
+          }))
+        );
+      });
   }, []);
 
   return (
@@ -185,7 +191,6 @@ function Profile() {
               src="https://scontent-sin6-3.cdninstagram.com/v/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=scontent-sin6-3.cdninstagram.com&_nc_cat=1&_nc_ohc=cE8yhZvtWRIAX-UHwFN&oh=f2d5dbea946dc5108a8e295e604fd580&oe=6018B58F&ig_cache_key=YW5vbnltb3VzX3Byb2ZpbGVfcGlj.2"
               alt=""
             />
-            {console.log(posts)}
           </S.ProfileHeaderLeft>
           <S.ProfileHeaderRight>
             <S.ProfileDisplayName>{userName}</S.ProfileDisplayName>
@@ -233,6 +238,7 @@ function Profile() {
                 });
               }}
             >
+              {console.log(likedPosts)}
               <S.OptionName>LIKED</S.OptionName>
               <FavoriteBorderIcon
                 color={
@@ -245,9 +251,8 @@ function Profile() {
           </S.ProfileMiddleOptionContainer>
         </S.ProfileMiddle>
 
-        {console.log(location.state.option)}
         {location.state.option === 'liked' ? (
-          <h1>Liked</h1>
+          <ProfilePosts posts={likedPosts} />
         ) : (
           <ProfilePosts posts={posts} />
         )}

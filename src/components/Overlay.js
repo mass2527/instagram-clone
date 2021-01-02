@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import db from '../firebase/firebase';
 import FaceIcon from '@material-ui/icons/Face';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
 import moment from 'moment';
@@ -13,6 +11,7 @@ import Comment from './Comment';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import PostImageLoader from './PostImageLoader';
+import PostIcons from './PostIcons';
 
 const S = {
   Overlay: styled.div`
@@ -140,22 +139,6 @@ const S = {
     }
   `,
 
-  PostIcons: styled.div`
-    cursor: pointer;
-    height: 45px;
-    padding: 16px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #efefef;
-
-    span {
-      margin-left: 5px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-  `,
-
   Timestamp: styled.div`
     height: 20px;
     display: flex;
@@ -204,7 +187,6 @@ function Overlay() {
   const { postId } = useParams();
   const [postInfo, setPostInfo] = useState({});
   const [comments, setComments] = useState([]);
-  const [hearts, setHearts] = useState([]);
   const overlayRef = useRef(null);
   const buttonRef = useRef(null);
   const imageRef = useRef(null);
@@ -267,13 +249,6 @@ function Overlay() {
         );
       });
 
-    db.collection('posts')
-      .doc(postId)
-      .collection('hearts')
-      .onSnapshot((snapshot) => {
-        setHearts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-      });
-
     imageRef.current.addEventListener('load', () => {
       setImageLoading(false);
     });
@@ -293,24 +268,6 @@ function Overlay() {
     };
   }, []);
 
-  function clickHeart() {
-    const liked = hearts.find((heart) => heart?.userId === user.userId);
-
-    if (liked) {
-      db.collection('posts')
-        .doc(postId)
-        .collection('hearts')
-        .doc(liked.id)
-        .delete();
-    } else {
-      db.collection('posts').doc(postId).collection('hearts').add({
-        userImageURL: user.userImageURL,
-        displayName: user.displayName,
-        userId: user.userId,
-      });
-    }
-  }
-
   function viewProfile() {
     history.push(`/${postInfo.displayName}/`, {
       userName: postInfo.displayName,
@@ -321,6 +278,7 @@ function Overlay() {
 
   return (
     <>
+      {console.log(postInfo)}
       <S.Overlay ref={overlayRef} height={window.scrollY}>
         <S.ClostButton>
           <CloseIcon
@@ -417,14 +375,19 @@ function Overlay() {
                     <AddIcon onClick={loadMoreComments} fontSize="middle" />
                   </S.CommentLoadMoreContainer>
                 </S.PostMiddle>
-                <S.PostIcons>
-                  {hearts.find((heart) => heart?.userId === user.userId) ? (
-                    <FavoriteIcon color="secondary" onClick={clickHeart} />
-                  ) : (
-                    <FavoriteBorderIcon onClick={clickHeart} />
-                  )}
-                  <span>liked {hearts.length}</span>
-                </S.PostIcons>
+
+                <PostIcons
+                  postId={postId}
+                  caption={postInfo.caption}
+                  displayName={postInfo.displayName}
+                  imageURL={postInfo.imageURL}
+                  timestamp={postInfo.timestamp}
+                  title={postInfo.title}
+                  userId={postInfo.userId}
+                  userImageURL={postInfo.userImageURL}
+                  commentIconDisableOption
+                  borderTopOption
+                />
                 <S.Timestamp>
                   {moment(
                     new Date(postInfo?.timestamp?.toDate()).toUTCString()

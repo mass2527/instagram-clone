@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import db from '../firebase/firebase';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 const S = {
   SquarePost: styled.div`
@@ -85,10 +85,12 @@ function SquarePost({ postId, imageURL, title }) {
   const currentPost = db.collection('posts').doc(postId);
   const history = useHistory();
   const { userName } = useParams();
+  const location = useLocation();
 
   function clickPost() {
     history.push(`/p/${postId}/`, {
       userName,
+      option: location.state.option,
     });
   }
 
