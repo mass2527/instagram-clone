@@ -88,6 +88,18 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [clicked, setClicked] = useState('');
   const history = useHistory();
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    db.collection('users').onSnapshot((snapshot) => {
+      setUsers(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+    });
+  }, []);
 
   function initializeInput() {
     setName('');
@@ -103,6 +115,13 @@ function Login() {
     setLoading(true);
 
     try {
+      if (users?.some((user) => user.displayName === name)) {
+        setName('');
+        setLoading(false);
+        setClicked('');
+        throw new Error('name already exist');
+      }
+
       const generatedUser = await auth.createUserWithEmailAndPassword(
         email,
         password
@@ -112,10 +131,15 @@ function Login() {
         displayName: name,
       });
 
+      console.log('generatedUser>>>', generatedUser.user);
+
       db.collection('users')
-        .add({
-          displayName: name,
-          id: generatedUser.user.uid,
+        .doc(generatedUser.user.uid)
+        .set({
+          displayName: generatedUser.user.displayName,
+          email: generatedUser.user.email,
+          uid: generatedUser.user.uid,
+          photoURL: generatedUser.user.photoURL,
         })
         .then(() => {
           history.push('/');
@@ -145,6 +169,7 @@ function Login() {
 
   return (
     <S.Login>
+      {console.log(users?.some((user) => user.displayName === name))}
       <S.LoginBox>
         <S.Logo
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"

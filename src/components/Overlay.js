@@ -25,6 +25,7 @@ const S = {
     background-color: rgba(0, 0, 0, 0.5);
     display: grid;
     place-items: center;
+    z-index: 2;
 
     @media (max-width: 500px) {
       place-items: end stretch;

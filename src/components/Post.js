@@ -174,14 +174,15 @@ function Post({
     if (!user) return history.push('/login');
     const liked = hearts.find((heart) => heart?.userId === user?.userId);
 
+    const heartsCollection = db
+      .collection('posts')
+      .doc(postId)
+      .collection('hearts');
+
     if (liked) {
-      db.collection('posts')
-        .doc(postId)
-        .collection('hearts')
-        .doc(liked.id)
-        .delete();
+      heartsCollection.doc(liked.id).delete();
     } else {
-      db.collection('posts').doc(postId).collection('hearts').add({
+      heartsCollection.add({
         userImageURL: user.userImageURL,
         displayName: user.displayName,
         userId: user?.userId,

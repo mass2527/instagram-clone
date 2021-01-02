@@ -167,9 +167,11 @@ function Profile() {
         setLoading(false);
       });
 
-    // db.collection('posts').onSnapshot(snapshot=>{
-    //   snapshot.docs.filter(doc=>doc.)
-    // })
+    // db.collection('posts').onSnapshot((snapshot) => {
+    //   snapshot.docs.map(doc=>doc.collection('hearts').onSnapshot((snapshot) => {
+    //     console.log(snapshot.data());
+    //   });)
+    // });
   }, []);
 
   return (

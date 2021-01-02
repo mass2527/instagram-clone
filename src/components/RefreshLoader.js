@@ -11,6 +11,7 @@ const S = {
     height: 100%;
     display: grid;
     place-items: center;
+    z-index: 999;
   `,
 };
 
