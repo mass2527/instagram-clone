@@ -1,11 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useLocation, useParams, useHistory } from 'react-router-dom';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AppsIcon from '@material-ui/icons/Apps';
-import db from '../firebase/firebase';
+import db, { storage } from '../firebase/firebase';
 import RefreshLoader from './RefreshLoader';
 import ProfilePosts from './ProfilePosts';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
+
+const Spin = keyframes`
+    from{
+        transform:rotate(0deg)
+    }
+    to{
+        transform:rotate(360deg)
+    }
+    `;
 
 const S = {
   Profile: styled.div`
@@ -38,16 +49,44 @@ const S = {
   ProfileHeaderRight: styled.div`
     width: 613px;
     color: #262626;
+
+    @media (max-width: 735px) {
+      display: flex;
+      align-items: center;
+    }
   `,
 
-  ProfileImage: styled.img`
+  ProfileImageContainer: styled.div`
     width: 150px;
     height: 150px;
+    position: relative;
+    display: grid;
+    place-items: center;
 
     @media (max-width: 735px) {
       width: 77px;
       height: 77px;
     }
+  `,
+
+  ProfileImage: styled.img`
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 100%;
+    object-fit: contain;
+    opacity: ${(props) => props.isLoading && 0.5};
+  `,
+
+  ProfileImageLoader: styled.img`
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    animation: ${Spin} 2s infinite linear;
+  `,
+
+  FileInput: styled.input`
+    display: none;
   `,
 
   ProfileDisplayName: styled.div`
@@ -98,7 +137,7 @@ const S = {
     box-sizing: border-box;
 
     @media (min-width: 735px) {
-      border-top: 2px solid
+      border-top: 1px solid
         ${(props) => (props.borderTop ? '#262626' : 'transparent')};
 
       > .MuiSvgIcon-root {
@@ -142,16 +181,27 @@ const S = {
 
 function Profile() {
   const location = useLocation();
-  // const [userName, setUsername] = useState(location.state.userName);
   const history = useHistory();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [likedPosts, setLikedPosts] = useState([]);
-  let userName;
+  const inputRef = useRef(null);
+  const user = useSelector(selectUser);
+  const [currentProfileUserInfo, setCurrentProfileUserInfo] = useState({});
+  const [profileImageLoading, setProfileImageLoading] = useState(false);
+
+  useEffect(() => {
+    db.collection('users')
+      .doc(location.state.userName)
+      .get()
+      .then((res) => {
+        setCurrentProfileUserInfo(res.data());
+      });
+  }, [profileImageLoading, location.state.userName]);
 
   useEffect(() => {
     setLoading(true);
-    userName = location.state.userName;
+    const userName = location.state.userName;
 
     db.collection('posts')
       .orderBy('timestamp', 'desc')
@@ -182,6 +232,45 @@ function Profile() {
       });
   }, [location.state.userName]);
 
+  function handleFileChange(e) {
+    const currentFile = e.target.files[0];
+    if (!currentFile) return;
+    setProfileImageLoading(true);
+
+    if (
+      e.target.files[0].type !== 'image/jpeg' &&
+      e.target.files[0].type !== 'image/jpg' &&
+      e.target.files[0].type !== 'image/png'
+    ) {
+      return setProfileImageLoading(false);
+    }
+
+    const uploadTask = storage
+      .ref(`/profileImages/${currentFile.name}`)
+      .put(currentFile);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {},
+      (error) => {
+        alert(error.message);
+      },
+      () => {
+        storage
+          .ref('profileImages')
+          .child(currentFile.name)
+          .getDownloadURL()
+          .then((url) => {
+            db.collection('users').doc(user.displayName).update({
+              photoURL: url,
+            });
+
+            setProfileImageLoading(false);
+          });
+      }
+    );
+  }
+
   return (
     <>
       {loading && <RefreshLoader />}
@@ -189,9 +278,32 @@ function Profile() {
       <S.Profile>
         <S.ProfileHeader>
           <S.ProfileHeaderLeft>
-            <S.ProfileImage
-              src="https://scontent-sin6-3.cdninstagram.com/v/t51.2885-19/44884218_345707102882519_2446069589734326272_n.jpg?_nc_ht=scontent-sin6-3.cdninstagram.com&_nc_cat=1&_nc_ohc=cE8yhZvtWRIAX-UHwFN&oh=f2d5dbea946dc5108a8e295e604fd580&oe=6018B58F&ig_cache_key=YW5vbnltb3VzX3Byb2ZpbGVfcGlj.2"
-              alt=""
+            <S.ProfileImageContainer>
+              <S.ProfileImage
+                isLoading={profileImageLoading}
+                onClick={() => {
+                  if (user.displayName !== location.state.userName) return;
+                  inputRef.current.click();
+                }}
+                src={
+                  currentProfileUserInfo.photoURL === 'null'
+                    ? 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+                    : currentProfileUserInfo.photoURL
+                }
+                alt="user-profile"
+              />
+              {profileImageLoading && (
+                <S.ProfileImageLoader
+                  src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetdrawings.com%2Ffree-icon-bw%2Fwaiting-icon-gif-13.png&f=1&nofb=1"
+                  alt="loader"
+                />
+              )}
+            </S.ProfileImageContainer>
+
+            <S.FileInput
+              onChange={handleFileChange}
+              ref={inputRef}
+              type="file"
             />
           </S.ProfileHeaderLeft>
           <S.ProfileHeaderRight>

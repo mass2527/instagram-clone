@@ -71,7 +71,7 @@ const S = {
   Loader: styled.img`
     width: 12px;
     height: 12px;
-    animation: ${Spin} 1s infinite linear;
+    animation: ${Spin} 3s infinite linear;
   `,
 
   ErrorMessage: styled.strong`
