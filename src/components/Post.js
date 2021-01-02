@@ -12,6 +12,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import history, { useHistory } from 'react-router-dom';
 import CommentSender from './CommentSender';
 import PostImageLoader from './PostImageLoader';
+import { viewProfile } from '../utils/util';
 
 const S = {
   Post: styled.div`
@@ -170,6 +171,7 @@ function Post({
   }, []);
 
   function clickHeart() {
+    if (!user) return history.push('/login');
     const liked = hearts.find((heart) => heart?.userId === user?.userId);
 
     if (liked) {
@@ -188,20 +190,33 @@ function Post({
   }
 
   function clickViewAll() {
+    if (!user) return history.push('/login');
     history.push(`/p/${postId}/`);
+  }
+
+  function viewProfile() {
+    if (!user) return history.push('/login');
+    history.push(`/${displayName}/`, {
+      userName: displayName,
+    });
+
+    document.querySelector('body').style.overflowY = 'scroll';
   }
 
   return (
     <S.Post>
       <S.PostHeader>
         {userImageURL ? (
-          <S.PostUserImage src={userImageURL}></S.PostUserImage>
+          <S.PostUserImage
+            onClick={viewProfile}
+            src={userImageURL}
+          ></S.PostUserImage>
         ) : (
-          <FaceIcon />
+          <FaceIcon onClick={viewProfile} />
         )}
 
         <S.PostHeaderInfo>
-          <S.PostUserName>{displayName}</S.PostUserName>
+          <S.PostUserName onClick={viewProfile}>{displayName}</S.PostUserName>
           <S.PostTitle>{title}</S.PostTitle>
         </S.PostHeaderInfo>
       </S.PostHeader>

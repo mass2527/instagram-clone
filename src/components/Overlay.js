@@ -295,6 +295,14 @@ function Overlay() {
     }
   }
 
+  function viewProfile() {
+    history.push(`/${postInfo.displayName}/`, {
+      userName: postInfo.displayName,
+    });
+
+    document.querySelector('body').style.overflowY = 'scroll';
+  }
+
   return (
     <>
       <S.Overlay ref={overlayRef} height={window.scrollY}>
@@ -337,12 +345,15 @@ function Overlay() {
               <>
                 <S.PostTop>
                   {postInfo.userImageURL ? (
-                    <S.UserImage src={postInfo.userImageURL} />
+                    <S.UserImage
+                      onClick={viewProfile}
+                      src={postInfo.userImageURL}
+                    />
                   ) : (
-                    <FaceIcon />
+                    <FaceIcon onClick={viewProfile} />
                   )}
                   <S.PostInfo>
-                    <S.PostDisplayName>
+                    <S.PostDisplayName onClick={viewProfile}>
                       {postInfo.displayName}
                     </S.PostDisplayName>
                     <S.PostTitle>{postInfo.title}</S.PostTitle>

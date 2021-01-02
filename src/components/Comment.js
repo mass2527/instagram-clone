@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import FaceIcon from '@material-ui/icons/Face';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
 
 const S = {
   Comment: styled.div`
@@ -83,22 +86,32 @@ function Comment({
   timestamp,
   timestampOption,
 }) {
+  const user = useSelector(selectUser);
   const [viewAll, setViewAll] = useState(false);
+  const history = useHistory();
+
+  function viewProfile() {
+    if (!user) return history.push('/login');
+    history.push(`/${name}/`, {
+      userName: name,
+    });
+    document.querySelector('body').style.overflowY = 'scroll';
+  }
 
   return (
     <S.Comment marginOption={userImageOption}>
       {userImageOption && (
         <S.CommentLeft>
           {userImageURL ? (
-            <S.UserImage src={userImageURL} alt="" />
+            <S.UserImage onClick={viewProfile} src={userImageURL} alt="" />
           ) : (
-            <FaceIcon />
+            <FaceIcon onClick={viewProfile} />
           )}
         </S.CommentLeft>
       )}
 
       <S.CommentRight>
-        <S.Name>{name}</S.Name>
+        <S.Name onClick={viewProfile}>{name}</S.Name>
         <S.Content>
           {content?.length > 100 && !viewAll ? (
             <>

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 import db from '../firebase/firebase';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
 import RefreshLoader from './RefreshLoader';
 
 const S = {
@@ -59,10 +57,20 @@ const S = {
 function Feed() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfPosts, setNumberOfPosts] = useState(() => {
+    db.collection('posts').onSnapshot((snapshot) => {
+      setNumberOfPosts(snapshot.docs.length);
+    });
+  });
+
+  const postsPerPage = 5;
+  const feedRef = useRef(null);
 
   useEffect(() => {
     db.collection('posts')
       .orderBy('timestamp', 'desc')
+      .limit(postsPerPage * currentPage)
       .onSnapshot((snapshot) => {
         setPosts(
           snapshot.docs.map((doc) => ({ postId: doc.id, ...doc.data() }))
@@ -70,13 +78,31 @@ function Feed() {
 
         setLoading(false);
       });
-  }, []);
+  }, [currentPage]);
+
+  useEffect(() => {
+    function handleScroll() {
+      const lastPost = feedRef?.current?.lastElementChild;
+
+      if (
+        // 60 === margin bottom of lastPost
+        Math.round(lastPost.getBoundingClientRect().bottom) + 60 ===
+          window.innerHeight &&
+        currentPage < Math.ceil(numberOfPosts / postsPerPage)
+      ) {
+        setCurrentPage((currentPage) => currentPage + 1);
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [posts]);
 
   return (
     <>
       {loading && <RefreshLoader />}
       <S.Feed>
-        <S.FeedLeft>
+        <S.FeedLeft ref={feedRef}>
           {posts.map(
             ({
               caption,
