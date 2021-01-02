@@ -86,7 +86,7 @@ function Feed() {
 
       if (
         // 60 === margin bottom of lastPost
-        Math.round(lastPost.getBoundingClientRect().bottom) + 60 ===
+        Math.round(lastPost?.getBoundingClientRect().bottom) + 60 ===
           window.innerHeight &&
         currentPage < Math.ceil(numberOfPosts / postsPerPage)
       ) {

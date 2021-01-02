@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import db from '../firebase/firebase';
 import FaceIcon from '@material-ui/icons/Face';
@@ -25,6 +25,10 @@ const S = {
     background-color: rgba(0, 0, 0, 0.5);
     display: grid;
     place-items: center;
+
+    @media (max-width: 500px) {
+      place-items: end stretch;
+    }
   `,
 
   ClostButton: styled.div`
@@ -61,8 +65,13 @@ const S = {
   PostRight: styled.div`
     width: 335px;
     background-color: white;
+
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 500px) {
+      width: 100%;
+    }
   `,
 
   PostImage: styled.img`
@@ -231,6 +240,10 @@ function Overlay() {
     setScrollY(window.scrollY);
   }
 
+  function handlePopState() {
+    document.querySelector('body').style.overflowY = 'scroll';
+  }
+
   useEffect(() => {
     document.querySelector('body').style.overflowY = 'hidden';
 
@@ -263,6 +276,7 @@ function Overlay() {
     imageRef.current.addEventListener('load', () => {
       setImageLoading(false);
     });
+    window.addEventListener('popstate', handlePopState);
     window.addEventListener('click', clickOverlay);
     window.addEventListener('keydown', pressESC);
     window.addEventListener('resize', handleResize);
@@ -271,6 +285,7 @@ function Overlay() {
       imageRef?.current?.addEventListener('load', () => {
         setImageLoading(true);
       });
+      window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('click', clickOverlay);
       window.removeEventListener('keydown', pressESC);
       window.removeEventListener('resize', handleResize);
