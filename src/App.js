@@ -1,57 +1,93 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import Header from './components/Header';
+import Feed from './components/Feed';
+import { Switch, Route, useLocation } from 'react-router-dom';
+import Login from './Route/Login';
+import { auth } from './firebase/firebase';
+import { signIn, signOut } from './features/userSlice';
+import { useDispatch } from 'react-redux';
+import Overlay from './components/Overlay';
+import Profile from './components/Profile';
+
+const S = {
+  App: styled.div`
+    background-color: rgb(250, 250, 250);
+    min-height: 100vh;
+  `,
+
+  AppBody: styled.div`
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    /* padding-top: 30px; */
+  `,
+};
 
 function App() {
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        dispatch(
+          signIn({
+            displayName: currentUser.displayName,
+            email: currentUser.email,
+            userId: currentUser.uid,
+            userImageURL: currentUser.photoURL,
+          })
+        );
+        console.log(currentUser);
+      } else {
+        dispatch(signOut());
+      }
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <S.App>
+      {console.log(location.state?.userName)}
+
+      <Switch>
+        <Route exact path="/login">
+          <S.AppBody>
+            <Login />
+          </S.AppBody>
+        </Route>
+
+        <Route exact path="/p/:postId/">
+          <Header />
+          <S.AppBody>
+            {location.state?.userName ? <Profile /> : <Feed />}
+            <Overlay />
+          </S.AppBody>
+        </Route>
+
+        <Route exact path="/:userName/">
+          <Header />
+          <S.AppBody>
+            <Profile />
+          </S.AppBody>
+        </Route>
+
+        <Route exact path="/:userName/:option/">
+          <Header />
+          <S.AppBody>
+            <Profile />
+          </S.AppBody>
+        </Route>
+
+        <Route exact path="/">
+          <Header />
+          <S.AppBody>
+            <Feed />
+          </S.AppBody>
+        </Route>
+      </Switch>
+    </S.App>
   );
 }
 
