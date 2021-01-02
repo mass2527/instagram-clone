@@ -142,14 +142,16 @@ const S = {
 
 function Profile() {
   const location = useLocation();
-  const [userName] = useState(location.state.userName);
+  // const [userName, setUsername] = useState(location.state.userName);
   const history = useHistory();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [likedPosts, setLikedPosts] = useState([]);
+  let userName;
 
   useEffect(() => {
     setLoading(true);
+    userName = location.state.userName;
 
     db.collection('posts')
       .orderBy('timestamp', 'desc')
@@ -178,7 +180,7 @@ function Profile() {
           }))
         );
       });
-  }, []);
+  }, [location.state.userName]);
 
   return (
     <>
@@ -193,7 +195,9 @@ function Profile() {
             />
           </S.ProfileHeaderLeft>
           <S.ProfileHeaderRight>
-            <S.ProfileDisplayName>{userName}</S.ProfileDisplayName>
+            <S.ProfileDisplayName>
+              {location.state.userName}
+            </S.ProfileDisplayName>
             <S.ProfileInfoContainer>
               <S.ProfileInfoOption>POST {posts.length}</S.ProfileInfoOption>
               <S.ProfileInfoOption>FOLLOWER 0</S.ProfileInfoOption>
@@ -217,8 +221,8 @@ function Profile() {
             <S.ProfileMiddleOption
               borderTop={location.pathname.split('/')[2] === ''}
               onClick={() => {
-                history.push(`/${userName}/`, {
-                  userName,
+                history.push(`/${location.state.userName}/`, {
+                  userName: location.state.userName,
                 });
               }}
             >
@@ -232,13 +236,12 @@ function Profile() {
             <S.ProfileMiddleOption
               borderTop={location.pathname.split('/')[2] === 'liked'}
               onClick={() => {
-                history.push(`/${userName}/liked/`, {
-                  userName,
+                history.push(`/${location.state.userName}/liked/`, {
+                  userName: location.state.userName,
                   option: 'liked',
                 });
               }}
             >
-              {console.log(likedPosts)}
               <S.OptionName>LIKED</S.OptionName>
               <FavoriteBorderIcon
                 color={

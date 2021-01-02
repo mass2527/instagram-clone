@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import FaceIcon from '@material-ui/icons/Face';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -35,11 +35,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const S = {
   DropdownMenu: styled.div`
-    width: 100px;
-    box-sizing: border-box;
-    top: 55px;
+    width: 200px;
+
+    top: 42px;
     position: absolute;
-    right: 0px;
+    right: -18px;
     background: white;
     border: 1px solid lightgray;
     display: flex;
@@ -54,10 +54,12 @@ const S = {
   `,
 
   MenuItem: styled.strong`
-    height: 40px;
-    padding: 5px 0px;
+    height: 21px;
+    padding: 8px 16px;
+    box-sizing: border-box;
     flex: 1;
     width: 100%;
+
     display: flex;
     justify-content: flex-start;
     align-items: center;

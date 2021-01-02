@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useHistory } from 'react-router-dom';
-
 import DropdownMenu from './DropdownMenu';
 
 const S = {
@@ -35,49 +34,10 @@ const S = {
   `,
 
   ProfileIconContainer: styled.div`
+    position: relative;
     > .MuiSvgIcon-root {
       color: lightgray;
       cursor: pointer;
-    }
-  `,
-
-  DropdownMenu: styled.div`
-    width: 100px;
-    height: 100px;
-    box-sizing: border-box;
-    top: 55px;
-    position: absolute;
-    right: 0px;
-    background: white;
-    border: 1px solid lightgray;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 14px;
-    border-radius: 3px;
-    box-shadow: 1px 2px 5px lightgray;
-    opacity: ${(props) => (props.isOpen ? 1 : 0)};
-    transition: opacity 0.3s ease-in-out;
-    pointer-events: ${(props) => !props.isOpen && 'none'};
-  `,
-
-  MenuItem: styled.strong`
-    flex: 1;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
-    color: #7f7f7f;
-    /* opacity:{props} */
-
-    > .MuiSvgIcon-root {
-      margin: 0px 5px;
-    }
-
-    :hover {
-      background-color: rgb(250, 250, 250);
-      color: black;
     }
   `,
 };
