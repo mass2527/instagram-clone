@@ -36,7 +36,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const S = {
   DropdownMenu: styled.div`
     width: 200px;
-
     top: 42px;
     position: absolute;
     right: -18px;
@@ -59,13 +58,11 @@ const S = {
     box-sizing: border-box;
     flex: 1;
     width: 100%;
-
     display: flex;
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
     color: #7f7f7f;
-    /* opacity:{props} */
 
     > .MuiSvgIcon-root {
       margin: 0px 5px;
@@ -89,7 +86,6 @@ const S = {
     flex-direction: column;
     width: 350px;
     height: 380px;
-
     justify-content: space-between;
   `,
 
@@ -250,6 +246,7 @@ function DropdownMenu({ isOpen }) {
             </Button>
           </Toolbar>
         </AppBar>
+
         <S.UploadContainer>
           <S.UploadForm>
             <S.UploadInput
@@ -263,6 +260,7 @@ function DropdownMenu({ isOpen }) {
               image/png,
               image/gif"
             />
+
             <S.UploadTextarea
               onChange={(e) => setCaption(e.target.value)}
               value={caption}

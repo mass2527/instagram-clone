@@ -49,8 +49,6 @@ function App() {
 
   return (
     <S.App>
-      {console.log(location.state?.userName)}
-
       <Switch>
         <Route exact path="/login">
           <S.AppBody>

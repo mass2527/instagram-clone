@@ -21,7 +21,6 @@ function ProfilePosts({ posts }) {
           displayName={displayName}
         />
       ))}
-      {console.log(posts)}
     </S.ProfilePosts>
   );
 }

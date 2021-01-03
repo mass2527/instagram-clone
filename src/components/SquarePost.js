@@ -137,7 +137,6 @@ function SquarePost({ postId, imageURL, title, displayName }) {
       height={imageWidth}
       ref={divRef}
     >
-      {console.log(postUserInfo)}
       <S.Post ref={imageRef} src={imageURL} alt={title} />
       {loading && <S.Loader></S.Loader>}
       {overlayOption && (
