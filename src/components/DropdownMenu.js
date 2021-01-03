@@ -258,6 +258,10 @@ function DropdownMenu({ isOpen }) {
               maxLength={30}
               placeholder="Title"
               type="text"
+              accept="image/jpeg,
+              image/jpg,
+              image/png,
+              image/gif"
             />
             <S.UploadTextarea
               onChange={(e) => setCaption(e.target.value)}

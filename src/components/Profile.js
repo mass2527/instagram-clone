@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { useLocation, useParams, useHistory } from 'react-router-dom';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AppsIcon from '@material-ui/icons/Apps';
-import db, { storage } from '../firebase/firebase';
+import db, { auth, storage } from '../firebase/firebase';
 import RefreshLoader from './RefreshLoader';
 import ProfilePosts from './ProfilePosts';
 import { useSelector } from 'react-redux';
@@ -265,6 +265,10 @@ function Profile() {
               photoURL: url,
             });
 
+            auth.currentUser.updateProfile({
+              photoURL: url,
+            });
+
             setProfileImageLoading(false);
           });
       }
@@ -274,7 +278,7 @@ function Profile() {
   return (
     <>
       {loading && <RefreshLoader />}
-
+      {console.log(location)}
       <S.Profile>
         <S.ProfileHeader>
           <S.ProfileHeaderLeft>
@@ -286,9 +290,9 @@ function Profile() {
                   inputRef.current.click();
                 }}
                 src={
-                  currentProfileUserInfo.photoURL === 'null'
-                    ? 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
-                    : currentProfileUserInfo.photoURL
+                  currentProfileUserInfo.photoURL !== 'null'
+                    ? currentProfileUserInfo.photoURL
+                    : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
                 }
                 alt="user-profile"
               />
@@ -304,6 +308,9 @@ function Profile() {
               onChange={handleFileChange}
               ref={inputRef}
               type="file"
+              accept="image/jpeg,
+              image/jpg,
+              image/png"
             />
           </S.ProfileHeaderLeft>
           <S.ProfileHeaderRight>

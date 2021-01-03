@@ -49,8 +49,16 @@ function PostIcons({
   const user = useSelector(selectUser);
   const history = useHistory();
   const [hearts, setHearts] = useState([]);
+  const [postUserInfo, setPostUserInfo] = useState({});
 
   useEffect(() => {
+    db.collection('users')
+      .doc(displayName)
+      .get()
+      .then((res) => {
+        setPostUserInfo(res.data());
+      });
+
     db.collection('posts')
       .doc(postId)
       .collection('hearts')
@@ -66,7 +74,7 @@ function PostIcons({
 
   const DocInLikedCollection = db
     .collection('users')
-    .doc(user.displayName)
+    .doc(user?.displayName)
     .collection('liked')
     .doc(postId);
 
@@ -99,7 +107,11 @@ function PostIcons({
 
   function clickViewAll() {
     if (!user) return history.push('/login');
-    history.push(`/p/${postId}/`);
+
+    history.push(`/p/${postId}/`, {
+      displayName,
+      photoURL: postUserInfo.photoURL,
+    });
   }
 
   return (

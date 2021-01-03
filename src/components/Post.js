@@ -44,10 +44,10 @@ const S = {
   PostUserImage: styled.img`
     width: 32px;
     height: 32px;
+    box-sizing: border-box;
     object-fit: contain;
     border-radius: 100%;
-    padding: 2px;
-    border: 1px solid orangered;
+
     cursor: pointer;
   `,
 
@@ -116,6 +116,7 @@ function Post({
   const history = useHistory();
   const imageRef = useRef(null);
   const [postImageLoading, setPostImageLoading] = useState(true);
+  const [postUserInfo, setPostUserInfo] = useState({});
 
   useEffect(() => {
     db.collection('posts')
@@ -131,6 +132,13 @@ function Post({
         );
       });
 
+    db.collection('users')
+      .doc(displayName)
+      .get()
+      .then((res) => {
+        setPostUserInfo(res.data());
+      });
+
     imageRef?.current?.addEventListener('load', handleLoad);
     return () => imageRef?.current?.addEventListener('load', handleLoad);
   }, []);
@@ -141,7 +149,10 @@ function Post({
 
   function clickViewAll() {
     if (!user) return history.push('/login');
-    history.push(`/p/${postId}/`);
+    history.push(`/p/${postId}/`, {
+      displayName,
+      photoURL: postUserInfo?.photoURL,
+    });
   }
 
   function viewProfile() {
@@ -156,14 +167,15 @@ function Post({
   return (
     <S.Post>
       <S.PostHeader>
-        {userImageURL ? (
-          <S.PostUserImage
-            onClick={viewProfile}
-            src={userImageURL}
-          ></S.PostUserImage>
-        ) : (
-          <FaceIcon onClick={viewProfile} />
-        )}
+        <S.PostUserImage
+          onClick={viewProfile}
+          src={
+            postUserInfo?.photoURL
+              ? postUserInfo?.photoURL
+              : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+          }
+          alt="post-owner-profile-image"
+        />
 
         <S.PostHeaderInfo>
           <S.PostUserName onClick={viewProfile}>{displayName}</S.PostUserName>

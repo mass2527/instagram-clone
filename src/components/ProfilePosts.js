@@ -12,15 +12,17 @@ const S = {
 function ProfilePosts({ posts }) {
   return (
     <S.ProfilePosts>
-      {posts.map(({ id, imageURL, title }) => (
+      {posts.map(({ id, imageURL, title, displayName }) => (
         <SquarePost
           // ref={imageRef}
           key={id}
           postId={id}
           imageURL={imageURL}
           title={title}
+          displayName={displayName}
         />
       ))}
+      {console.log(posts)}
     </S.ProfilePosts>
   );
 }

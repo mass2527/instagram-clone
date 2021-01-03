@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useHistory } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu';
+import db, { auth } from '../firebase/firebase';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
 
 const S = {
   Header: styled.div`
@@ -35,31 +38,35 @@ const S = {
 
   ProfileIconContainer: styled.div`
     position: relative;
-    > .MuiSvgIcon-root {
-      color: lightgray;
-      cursor: pointer;
-    }
+  `,
+
+  ProfileImage: styled.img`
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+    cursor: pointer;
   `,
 };
 
 function Header() {
+  const user = useSelector(selectUser);
   const history = useHistory();
   const [clickProfile, setClickProfile] = useState(false);
   const menuRef = useRef(null);
   const iconRef = useRef(null);
 
+  function handleClick(e) {
+    if (
+      menuRef?.current?.contains(e.target) ||
+      e.target === iconRef.current ||
+      e.target === document.querySelector('path')
+    )
+      return;
+    setClickProfile(false);
+  }
+
   useEffect(() => {
     if (!clickProfile) return;
-
-    function handleClick(e) {
-      if (
-        menuRef?.current?.contains(e.target) ||
-        e.target === iconRef.current ||
-        e.target === document.querySelector('path')
-      )
-        return;
-      setClickProfile(false);
-    }
 
     window.addEventListener('click', handleClick);
     return () => window.removeEventListener('click', handleClick);
@@ -75,13 +82,19 @@ function Header() {
         />
 
         <S.ProfileIconContainer>
-          <AccountCircleIcon
+          <S.ProfileImage
+            src={
+              user?.userImageURL
+                ? user.userImageURL
+                : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+            }
+            alt="login-user-profile-image"
             ref={iconRef}
             onClick={() => {
               setClickProfile((crr) => !crr);
             }}
-            fontSize="large"
           />
+
           <DropdownMenu ref={menuRef} isOpen={clickProfile} />
         </S.ProfileIconContainer>
       </S.HeaderMiddle>

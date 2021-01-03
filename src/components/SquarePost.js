@@ -74,7 +74,7 @@ const S = {
   `,
 };
 
-function SquarePost({ postId, imageURL, title }) {
+function SquarePost({ postId, imageURL, title, displayName }) {
   const divRef = useRef(null);
   const imageRef = useRef(null);
   const [imageWidth, setImageWidth] = useState(500);
@@ -86,11 +86,14 @@ function SquarePost({ postId, imageURL, title }) {
   const history = useHistory();
   const { userName } = useParams();
   const location = useLocation();
+  const [postUserInfo, setPostUserInfo] = useState({});
 
   function clickPost() {
     history.push(`/p/${postId}/`, {
       userName,
       option: location.state.option,
+      photoURL: postUserInfo?.photoURL,
+      displayName: postUserInfo?.displayName,
     });
   }
 
@@ -105,6 +108,13 @@ function SquarePost({ postId, imageURL, title }) {
   useEffect(() => {
     setLoading(true);
     setImageWidth(divRef.current.clientWidth);
+
+    db.collection('users')
+      .doc(userName)
+      .get()
+      .then((res) => {
+        setPostUserInfo(res.data());
+      });
 
     currentPost.collection('comments').onSnapshot((snapshot) => {
       setNumberOfComments(snapshot.docs?.length);

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FaceIcon from '@material-ui/icons/Face';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
+import db from '../firebase/firebase';
 
 const S = {
   Comment: styled.div`
@@ -79,7 +80,6 @@ const S = {
 
 function Comment({
   userImageOption,
-  userImageURL,
   caption,
   name,
   content,
@@ -89,6 +89,16 @@ function Comment({
   const user = useSelector(selectUser);
   const [viewAll, setViewAll] = useState(false);
   const history = useHistory();
+  const [commentUserInfo, setCommentUserInfo] = useState({});
+
+  useEffect(() => {
+    db.collection('users')
+      .doc(name)
+      .get()
+      .then((res) => {
+        setCommentUserInfo(res.data());
+      });
+  }, []);
 
   function viewProfile() {
     if (!user) return history.push('/login');
@@ -102,11 +112,15 @@ function Comment({
     <S.Comment marginOption={userImageOption}>
       {userImageOption && (
         <S.CommentLeft>
-          {userImageURL ? (
-            <S.UserImage onClick={viewProfile} src={userImageURL} alt="" />
-          ) : (
-            <FaceIcon onClick={viewProfile} />
-          )}
+          <S.UserImage
+            onClick={viewProfile}
+            src={
+              commentUserInfo?.photoURL
+                ? commentUserInfo.photoURL
+                : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+            }
+            alt="profile-image"
+          />
         </S.CommentLeft>
       )}
 
@@ -122,6 +136,7 @@ function Comment({
             content
           )}
         </S.Content>
+
         {caption && <S.Caption></S.Caption>}
         <br />
         {timestampOption && (

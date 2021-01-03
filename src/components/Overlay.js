@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import db from '../firebase/firebase';
 import FaceIcon from '@material-ui/icons/Face';
 import { useSelector } from 'react-redux';
@@ -66,6 +66,20 @@ const S = {
     width: 335px;
     background-color: white;
 
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 500px) {
+      width: 100%;
+    }
+  `,
+
+  LoadingPostRight: styled.div`
+    position: absolute;
+
+    width: 335px;
+    background-color: white;
+    height: 600px;
     display: flex;
     flex-direction: column;
 
@@ -195,6 +209,8 @@ function Overlay() {
   const [commentsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
   const [scrollY, setScrollY] = useState(window.scrollY);
+  const [postUserInfo, setPostUserInfo] = useState({});
+  const location = useLocation();
 
   function loadMoreComments() {
     setCurrentPage((crr) => crr + 1);
@@ -252,21 +268,28 @@ function Overlay() {
     imageRef.current.addEventListener('load', () => {
       setImageLoading(false);
     });
+
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('click', clickOverlay);
     window.addEventListener('keydown', pressESC);
     window.addEventListener('resize', handleResize);
 
     return () => {
-      imageRef?.current?.addEventListener('load', () => {
-        setImageLoading(true);
-      });
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('click', clickOverlay);
       window.removeEventListener('keydown', pressESC);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    db.collection('users')
+      .doc(postInfo.displayName)
+      .get()
+      .then((res) => {
+        setPostUserInfo(res.data());
+      });
+  }, [postInfo]);
 
   function viewProfile() {
     history.push(`/${postInfo.displayName}/`, {
@@ -278,7 +301,8 @@ function Overlay() {
 
   return (
     <>
-      {console.log(postInfo)}
+      {console.log(location)}
+
       <S.Overlay ref={overlayRef} height={window.scrollY}>
         <S.ClostButton>
           <CloseIcon
@@ -299,8 +323,8 @@ function Overlay() {
           </S.PostLeft>
 
           <S.PostRight>
-            {imageLoading ? (
-              <>
+            {imageLoading && (
+              <S.LoadingPostRight>
                 <S.PostTop>
                   <S.Circle></S.Circle>
                   <S.PostInfo>
@@ -314,88 +338,83 @@ function Overlay() {
                   <S.Bar width={230} height={15} marginTop={10} />
                   <S.Bar width={90} height={15} marginTop={10} />
                 </S.PostLoadingBottom>
-              </>
-            ) : (
-              <>
-                <S.PostTop>
-                  {postInfo.userImageURL ? (
-                    <S.UserImage
-                      onClick={viewProfile}
-                      src={postInfo.userImageURL}
-                    />
-                  ) : (
-                    <FaceIcon onClick={viewProfile} />
-                  )}
-                  <S.PostInfo>
-                    <S.PostDisplayName onClick={viewProfile}>
-                      {postInfo.displayName}
-                    </S.PostDisplayName>
-                    <S.PostTitle>{postInfo.title}</S.PostTitle>
-                  </S.PostInfo>
-                </S.PostTop>
-                <S.PostMiddle>
-                  <Comment
-                    userImageURL={postInfo.userImageURL}
-                    name={postInfo.displayName}
-                    content={postInfo.caption}
-                    userImageOption
-                    timestamp={postInfo.timestamp}
-                    timestampOption
-                  />
-
-                  {comments
-                    .slice(0, commentsPerPage * currentPage)
-                    .map(
-                      ({
-                        commentId,
-                        userImageURL,
-                        displayName,
-                        comment,
-                        timestamp,
-                      }) => (
-                        <Comment
-                          key={commentId}
-                          userImageURL={userImageURL}
-                          name={displayName}
-                          content={comment}
-                          userImageOption
-                          timestamp={timestamp}
-                          timestampOption
-                        />
-                      )
-                    )}
-                  {}
-                  <S.CommentLoadMoreContainer
-                    hide={
-                      currentPage ===
-                        Math.ceil(comments.length / commentsPerPage) ||
-                      Math.ceil(comments.length / commentsPerPage) === 0
-                    }
-                  >
-                    <AddIcon onClick={loadMoreComments} fontSize="middle" />
-                  </S.CommentLoadMoreContainer>
-                </S.PostMiddle>
-
-                <PostIcons
-                  postId={postId}
-                  caption={postInfo.caption}
-                  displayName={postInfo.displayName}
-                  imageURL={postInfo.imageURL}
-                  timestamp={postInfo.timestamp}
-                  title={postInfo.title}
-                  userId={postInfo.userId}
-                  userImageURL={postInfo.userImageURL}
-                  commentIconDisableOption
-                  borderTopOption
-                />
-                <S.Timestamp>
-                  {moment(
-                    new Date(postInfo?.timestamp?.toDate()).toUTCString()
-                  ).fromNow()}
-                </S.Timestamp>
-                <CommentSender postId={postId} user={user} />
-              </>
+              </S.LoadingPostRight>
             )}
+            <S.PostTop>
+              <S.UserImage
+                onClick={viewProfile}
+                src={
+                  location.state?.photoURL
+                    ? location.state.photoURL
+                    : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+                }
+              />
+
+              <S.PostInfo>
+                <S.PostDisplayName onClick={viewProfile}>
+                  {postInfo.displayName}
+                </S.PostDisplayName>
+                <S.PostTitle>{postInfo.title}</S.PostTitle>
+              </S.PostInfo>
+            </S.PostTop>
+            <S.PostMiddle>
+              <Comment
+                name={location.state.displayName}
+                content={postInfo.caption}
+                userImageOption
+                timestamp={postInfo.timestamp}
+                timestampOption
+              />
+
+              {comments
+                .slice(0, commentsPerPage * currentPage)
+                .map(
+                  ({
+                    commentId,
+                    userImageURL,
+                    displayName,
+                    comment,
+                    timestamp,
+                  }) => (
+                    <Comment
+                      key={commentId}
+                      name={displayName}
+                      content={comment}
+                      userImageOption
+                      timestamp={timestamp}
+                      timestampOption
+                    />
+                  )
+                )}
+              {}
+              <S.CommentLoadMoreContainer
+                hide={
+                  currentPage ===
+                    Math.ceil(comments.length / commentsPerPage) ||
+                  Math.ceil(comments.length / commentsPerPage) === 0
+                }
+              >
+                <AddIcon onClick={loadMoreComments} fontSize="middle" />
+              </S.CommentLoadMoreContainer>
+            </S.PostMiddle>
+            <PostIcons
+              postId={postId}
+              caption={postInfo.caption}
+              displayName={postInfo.displayName}
+              imageURL={postInfo.imageURL}
+              timestamp={postInfo.timestamp}
+              title={postInfo.title}
+              userId={postInfo.userId}
+              userImageURL={postInfo.userImageURL}
+              commentIconDisableOption
+              borderTopOption
+            />
+            <S.Timestamp>
+              {moment(
+                new Date(postInfo?.timestamp?.toDate()).toUTCString()
+              ).fromNow()}
+            </S.Timestamp>
+            <CommentSender postId={postId} user={user} />
           </S.PostRight>
         </S.PostBox>
       </S.Overlay>
