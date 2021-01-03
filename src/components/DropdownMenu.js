@@ -238,7 +238,7 @@ function DropdownMenu({ isOpen }) {
             </Typography>
             <Button
               onClick={handleUpload}
-              disabled={!title.length || !caption.length || !file}
+              disabled={!title.length || !caption.length || !file || loading}
               autoFocus
               color="inherit"
             >
@@ -264,7 +264,7 @@ function DropdownMenu({ isOpen }) {
             <S.UploadTextarea
               onChange={(e) => setCaption(e.target.value)}
               value={caption}
-              maxLength={700}
+              maxLength={1000}
               placeholder="Caption"
               type="text"
             ></S.UploadTextarea>

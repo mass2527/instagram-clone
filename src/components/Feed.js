@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Post from './Post';
 import db from '../firebase/firebase';
 import RefreshLoader from './RefreshLoader';
+import FeedRight from './FeedRight';
 
 const S = {
   Feed: styled.div`
@@ -31,15 +32,6 @@ const S = {
       width: 100%;
       margin: 0px;
       max-width: 602px;
-    }
-  `,
-
-  FeedRight: styled.div`
-    border: 1px solid green;
-    flex: 1;
-
-    @media (max-width: 1000px) {
-      display: none;
     }
   `,
 
@@ -128,7 +120,8 @@ function Feed() {
             )
           )}
         </S.FeedLeft>
-        <S.FeedRight></S.FeedRight>
+
+        <FeedRight />
       </S.Feed>
     </>
   );

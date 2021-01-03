@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
+import { auth } from '../firebase/firebase';
 
 const S = {
   Header: styled.div`
@@ -82,8 +83,8 @@ function Header() {
         <S.ProfileIconContainer>
           <S.ProfileImage
             src={
-              user?.userImageURL
-                ? user.userImageURL
+              auth.currentUser?.photoURL
+                ? auth.currentUser.photoURL
                 : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
             }
             alt="login-user-profile-image"

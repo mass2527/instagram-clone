@@ -68,14 +68,14 @@ function CommentSender({ postId, user }) {
             setComment(e.target.value);
           }}
           maxLength={500}
-          placeholder="add a comment"
+          placeholder="Add a comment..."
           type="text"
         />
         <S.CommentButton
           onClick={sendComment}
           disabled={comment.length === 0 || !user}
         >
-          Send
+          Post
         </S.CommentButton>
       </S.CommentForm>
     </S.CommentSender>

@@ -212,7 +212,9 @@ function Post({
           />
         ))}
 
-        <S.PostTimestamp>{moment(timestamp).fromNow()}</S.PostTimestamp>
+        <S.PostTimestamp>
+          {moment(timestamp).fromNow().toUpperCase()}
+        </S.PostTimestamp>
       </S.PostBottom>
       <CommentSender postId={postId} user={user} />
     </S.Post>

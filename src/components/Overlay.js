@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import db from '../firebase/firebase';
-import FaceIcon from '@material-ui/icons/Face';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
 import moment from 'moment';
@@ -74,20 +73,6 @@ const S = {
       width: 100%;
     }
   `,
-
-  // LoadingPostRight: styled.div`
-  //   position: absolute;
-
-  //   width: 335px;
-  //   background-color: white;
-  //   height: 600px;
-  //   display: flex;
-  //   flex-direction: column;
-
-  //   @media (max-width: 500px) {
-  //     width: 100%;
-  //   }
-  // `,
 
   PostImage: styled.img`
     height: 100%;
@@ -280,107 +265,97 @@ function Overlay() {
   }
 
   return (
-    <>
-      <S.Overlay ref={overlayRef} height={window.scrollY}>
-        <S.ClostButton>
-          <CloseIcon
-            ref={buttonRef}
-            height={window.scrollY}
-            onClick={clickCloseButton}
-            fontSize="large"
+    <S.Overlay ref={overlayRef} height={window.scrollY}>
+      <S.ClostButton>
+        <CloseIcon
+          ref={buttonRef}
+          height={window.scrollY}
+          onClick={clickCloseButton}
+          fontSize="large"
+        />
+      </S.ClostButton>
+      <S.PostBox>
+        <S.PostLeft>
+          {imageLoading && <PostImageLoader />}
+          <S.PostImage
+            ref={imageRef}
+            src={postInfo.imageURL}
+            alt={postInfo.title}
           />
-        </S.ClostButton>
-        <S.PostBox>
-          <S.PostLeft>
-            {imageLoading && <PostImageLoader />}
-            <S.PostImage
-              ref={imageRef}
-              src={postInfo.imageURL}
-              alt={postInfo.title}
+        </S.PostLeft>
+
+        <S.PostRight>
+          {imageLoading && <PostRightLoader />}
+          <S.PostTop>
+            <S.UserImage
+              onClick={viewProfile}
+              src={
+                location.state?.photoURL
+                  ? location.state.photoURL
+                  : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+              }
             />
-          </S.PostLeft>
 
-          <S.PostRight>
-            {imageLoading && <PostRightLoader />}
-            <S.PostTop>
-              <S.UserImage
-                onClick={viewProfile}
-                src={
-                  location.state?.photoURL
-                    ? location.state.photoURL
-                    : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
-                }
-              />
-
-              <S.PostInfo>
-                <S.PostDisplayName onClick={viewProfile}>
-                  {postInfo.displayName}
-                </S.PostDisplayName>
-                <S.PostTitle>{postInfo.title}</S.PostTitle>
-              </S.PostInfo>
-            </S.PostTop>
-            <S.PostMiddle>
-              <Comment
-                name={location.state.displayName}
-                content={postInfo.caption}
-                userImageOption
-                timestamp={postInfo.timestamp}
-                timestampOption
-              />
-
-              {comments
-                .slice(0, commentsPerPage * currentPage)
-                .map(
-                  ({
-                    commentId,
-                    userImageURL,
-                    displayName,
-                    comment,
-                    timestamp,
-                  }) => (
-                    <Comment
-                      key={commentId}
-                      name={displayName}
-                      content={comment}
-                      userImageOption
-                      timestamp={timestamp}
-                      timestampOption
-                    />
-                  )
-                )}
-              {}
-              <S.CommentLoadMoreContainer
-                hide={
-                  currentPage ===
-                    Math.ceil(comments.length / commentsPerPage) ||
-                  Math.ceil(comments.length / commentsPerPage) === 0
-                }
-              >
-                <AddIcon onClick={loadMoreComments} fontSize="middle" />
-              </S.CommentLoadMoreContainer>
-            </S.PostMiddle>
-            <PostIcons
-              postId={postId}
-              caption={postInfo.caption}
-              displayName={postInfo.displayName}
-              imageURL={postInfo.imageURL}
+            <S.PostInfo>
+              <S.PostDisplayName onClick={viewProfile}>
+                {postInfo.displayName}
+              </S.PostDisplayName>
+              <S.PostTitle>{postInfo.title}</S.PostTitle>
+            </S.PostInfo>
+          </S.PostTop>
+          <S.PostMiddle>
+            <Comment
+              name={location.state.displayName}
+              content={postInfo.caption}
+              userImageOption
               timestamp={postInfo.timestamp}
-              title={postInfo.title}
-              userId={postInfo.userId}
-              userImageURL={postInfo.userImageURL}
-              commentIconDisableOption
-              borderTopOption
+              timestampOption
             />
-            <S.Timestamp>
-              {moment(
-                new Date(postInfo?.timestamp?.toDate()).toUTCString()
-              ).fromNow()}
-            </S.Timestamp>
-            <CommentSender postId={postId} user={user} />
-          </S.PostRight>
-        </S.PostBox>
-      </S.Overlay>
-    </>
+
+            {comments
+              .slice(0, commentsPerPage * currentPage)
+              .map(({ // prettier ignore
+                commentId, userImageURL, displayName, comment, timestamp }) => (
+                <Comment
+                  key={commentId}
+                  name={displayName}
+                  content={comment}
+                  userImageOption
+                  timestamp={timestamp}
+                  timestampOption
+                />
+              ))}
+            {}
+            <S.CommentLoadMoreContainer
+              hide={
+                currentPage === Math.ceil(comments.length / commentsPerPage) ||
+                Math.ceil(comments.length / commentsPerPage) === 0
+              }
+            >
+              <AddIcon onClick={loadMoreComments} fontSize="middle" />
+            </S.CommentLoadMoreContainer>
+          </S.PostMiddle>
+          <PostIcons
+            postId={postId}
+            caption={postInfo.caption}
+            displayName={postInfo.displayName}
+            imageURL={postInfo.imageURL}
+            timestamp={postInfo.timestamp}
+            title={postInfo.title}
+            userId={postInfo.userId}
+            userImageURL={postInfo.userImageURL}
+            commentIconDisableOption
+            borderTopOption
+          />
+          <S.Timestamp>
+            {moment(
+              new Date(postInfo?.timestamp?.toDate()).toUTCString()
+            ).fromNow()}
+          </S.Timestamp>
+          <CommentSender postId={postId} user={user} />
+        </S.PostRight>
+      </S.PostBox>
+    </S.Overlay>
   );
 }
 

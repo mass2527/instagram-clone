@@ -123,7 +123,7 @@ function Comment({
           />
         </S.CommentLeft>
       )}
-      {console.log(commentUserInfo)}
+
       <S.CommentRight>
         <S.Name onClick={viewProfile}>{name}</S.Name>
         <S.Content>
