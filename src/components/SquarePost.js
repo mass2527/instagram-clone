@@ -110,7 +110,7 @@ function SquarePost({ postId, imageURL, title, displayName }) {
     setImageWidth(divRef.current.clientWidth);
 
     db.collection('users')
-      .doc(userName)
+      .doc(displayName)
       .get()
       .then((res) => {
         setPostUserInfo(res.data());
@@ -137,6 +137,7 @@ function SquarePost({ postId, imageURL, title, displayName }) {
       height={imageWidth}
       ref={divRef}
     >
+      {console.log(postUserInfo)}
       <S.Post ref={imageRef} src={imageURL} alt={title} />
       {loading && <S.Loader></S.Loader>}
       {overlayOption && (

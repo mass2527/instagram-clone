@@ -290,7 +290,7 @@ function Profile() {
                   inputRef.current.click();
                 }}
                 src={
-                  currentProfileUserInfo.photoURL !== 'null'
+                  currentProfileUserInfo.photoURL
                     ? currentProfileUserInfo.photoURL
                     : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
                 }

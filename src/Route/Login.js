@@ -129,6 +129,7 @@ function Login() {
 
       await auth.currentUser.updateProfile({
         displayName: name,
+        photoURL: '',
       });
 
       console.log('generatedUser>>>', generatedUser.user);

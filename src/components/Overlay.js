@@ -12,6 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import PostImageLoader from './PostImageLoader';
 import PostIcons from './PostIcons';
+import PostRightLoader from './PostRightLoader';
 
 const S = {
   Overlay: styled.div`
@@ -74,19 +75,19 @@ const S = {
     }
   `,
 
-  LoadingPostRight: styled.div`
-    position: absolute;
+  // LoadingPostRight: styled.div`
+  //   position: absolute;
 
-    width: 335px;
-    background-color: white;
-    height: 600px;
-    display: flex;
-    flex-direction: column;
+  //   width: 335px;
+  //   background-color: white;
+  //   height: 600px;
+  //   display: flex;
+  //   flex-direction: column;
 
-    @media (max-width: 500px) {
-      width: 100%;
-    }
-  `,
+  //   @media (max-width: 500px) {
+  //     width: 100%;
+  //   }
+  // `,
 
   PostImage: styled.img`
     height: 100%;
@@ -161,27 +162,6 @@ const S = {
     color: #8e8e8e;
     padding: 16px;
     box-sizing: border-box;
-  `,
-
-  Circle: styled.div`
-    width: 32px;
-    height: 32px;
-    border-radius: 100%;
-    background-color: #efefef;
-  `,
-
-  Bar: styled.div`
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
-    margin-top: ${(props) => props.marginTop}px;
-    margin-bottom: ${(props) => props.marginBottom}px;
-    background-color: #efefef;
-  `,
-
-  PostLoadingBottom: styled.div`
-    height: 130px;
-    border-top: 1px solid #efefef;
-    padding-left: 16px;
   `,
 
   CommentLoadMoreContainer: styled.div`
@@ -301,8 +281,6 @@ function Overlay() {
 
   return (
     <>
-      {console.log(location)}
-
       <S.Overlay ref={overlayRef} height={window.scrollY}>
         <S.ClostButton>
           <CloseIcon
@@ -323,23 +301,7 @@ function Overlay() {
           </S.PostLeft>
 
           <S.PostRight>
-            {imageLoading && (
-              <S.LoadingPostRight>
-                <S.PostTop>
-                  <S.Circle></S.Circle>
-                  <S.PostInfo>
-                    <S.Bar width={140} height={10} marginBottom={4} />
-                    <S.Bar width={100} height={10} marginBottom={0} />
-                  </S.PostInfo>
-                </S.PostTop>
-                <S.PostMiddle></S.PostMiddle>
-                <S.PostLoadingBottom>
-                  <S.Bar width={140} height={15} marginTop={20} />
-                  <S.Bar width={230} height={15} marginTop={10} />
-                  <S.Bar width={90} height={15} marginTop={10} />
-                </S.PostLoadingBottom>
-              </S.LoadingPostRight>
-            )}
+            {imageLoading && <PostRightLoader />}
             <S.PostTop>
               <S.UserImage
                 onClick={viewProfile}

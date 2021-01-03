@@ -14,7 +14,6 @@ function ProfilePosts({ posts }) {
     <S.ProfilePosts>
       {posts.map(({ id, imageURL, title, displayName }) => (
         <SquarePost
-          // ref={imageRef}
           key={id}
           postId={id}
           imageURL={imageURL}

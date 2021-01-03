@@ -79,6 +79,7 @@ function PostIcons({
     .doc(postId);
 
   function clickHeart() {
+    if (!user) return history.push('/login');
     const liked = hearts.find((heart) => heart?.userId === user?.userId);
 
     if (liked) {

@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useHistory } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu';
-import db, { auth } from '../firebase/firebase';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
 
