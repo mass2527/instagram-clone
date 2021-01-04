@@ -67,20 +67,14 @@ function PostIcons({
       });
   }, []);
 
-  const heartsCollection = db
-    .collection('posts')
-    .doc(postId)
-    .collection('hearts');
-
-  const DocInLikedCollection = db
-    .collection('users')
-    .doc(user?.displayName)
-    .collection('liked')
-    .doc(postId);
-
   function clickHeart() {
     if (!user) return history.push('/login');
     const liked = hearts.find((heart) => heart?.userId === user?.userId);
+
+    // prettier-ignore
+    const heartsCollection = db.collection('posts').doc(postId).collection('hearts');
+    // prettier-ignore
+    const DocInLikedCollection = db.collection('users').doc(user?.displayName).collection('liked').doc(postId);
 
     if (liked) {
       heartsCollection.doc(liked.id).delete();

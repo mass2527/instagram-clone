@@ -40,7 +40,6 @@ function App() {
             userImageURL: currentUser.photoURL,
           })
         );
-        console.log(currentUser);
       } else {
         dispatch(signOut());
       }

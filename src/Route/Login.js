@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import db, { auth } from '../firebase/firebase';
 import { useHistory } from 'react-router-dom';
-
-const Spin = keyframes`
-    from{
-        transform:rotate(0deg)
-    }
-    to{
-        transform:rotate(360deg)
-    }
-    `;
+import { Spin } from '../utils/util';
 
 const S = {
   Login: styled.div`
@@ -18,10 +10,10 @@ const S = {
     place-items: center;
     width: 100%;
     flex: 1;
+    height: 100vh;
   `,
 
   LoginBox: styled.div`
-    margin-top: 100px;
     width: 350px;
     height: 380px;
     border: 1px solid lightgrey;
@@ -49,6 +41,7 @@ const S = {
     box-sizing: border-box;
     border: 1px solid lightgrey;
     background-color: #fafafa;
+
     :focus {
       outline: none;
     }
@@ -81,6 +74,7 @@ const S = {
 };
 
 function Login() {
+  const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -88,10 +82,10 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [clicked, setClicked] = useState('');
   const history = useHistory();
-  const [users, setUsers] = useState([]);
+  const usersCollection = db.collection('users');
 
   useEffect(() => {
-    db.collection('users').onSnapshot((snapshot) => {
+    usersCollection.onSnapshot((snapshot) => {
       setUsers(
         snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -101,18 +95,19 @@ function Login() {
     });
   }, []);
 
-  function initializeInput() {
-    setName('');
-    setEmail('');
-    setPassword('');
+  function startProcess(processName) {
+    setClicked(`${processName}`);
+    setLoading(true);
+  }
+
+  function handleError(error) {
+    setError(error.message);
     setLoading(false);
-    setClicked('');
   }
 
   async function signUp(e) {
     e.preventDefault();
-    setClicked('signUp');
-    setLoading(true);
+    startProcess('signUp');
 
     try {
       if (users?.some((user) => user.displayName === name)) {
@@ -122,50 +117,38 @@ function Login() {
         throw new Error('name already exist');
       }
 
-      const generatedUser = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
+      const {
+        user: { displayName, email: userEmail, uid, photoURL },
+      } = await auth.createUserWithEmailAndPassword(email, password);
 
       await auth.currentUser.updateProfile({
         displayName: name,
         photoURL: '',
       });
 
-      console.log('generatedUser>>>', generatedUser.user);
+      await usersCollection.doc(displayName).set({
+        displayName,
+        email: userEmail,
+        uid,
+        photoURL,
+      });
 
-      db.collection('users')
-        .doc(generatedUser.user.displayName)
-        .set({
-          displayName: generatedUser.user.displayName,
-          email: generatedUser.user.email,
-          uid: generatedUser.user.uid,
-          photoURL: generatedUser.user.photoURL,
-        })
-        .then(() => {
-          history.push('/');
-        });
+      history.replace('/');
     } catch (error) {
-      setError(error.message);
-      setLoading(false);
+      handleError(error);
     }
   }
 
-  function login(e) {
+  async function login(e) {
     e.preventDefault();
-    setClicked('login');
-    setLoading(true);
+    startProcess('login');
 
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        history.push('/');
-        initializeInput();
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      history.replace('/');
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   return (
@@ -173,7 +156,7 @@ function Login() {
       <S.LoginBox>
         <S.Logo
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"
-          alt=""
+          alt="instagram"
         />
 
         <S.LoginForm>
@@ -193,7 +176,7 @@ function Login() {
           />
           <S.LoginInput
             onChange={(e) => setEmail(e.target.value)}
-            maxLength={20}
+            maxLength={25}
             value={email}
             type="email"
             placeholder="email"

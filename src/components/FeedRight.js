@@ -33,7 +33,7 @@ function FeedRight() {
   useEffect(() => {
     db.collection('users').onSnapshot((snapshot) => {
       const otherUsers = snapshot.docs.filter(
-        (doc) => doc.data().displayName !== auth.currentUser.displayName
+        (doc) => doc.data().displayName !== auth.currentUser?.displayName
       );
       console.log('otherUsers>>>', otherUsers);
       setUsers(otherUsers.map((doc) => doc.data()));
