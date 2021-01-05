@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Comment from './Comment';
 import moment from 'moment';
-import FaceIcon from '@material-ui/icons/Face';
 import db from '../firebase/firebase';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';

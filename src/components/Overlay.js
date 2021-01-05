@@ -174,7 +174,6 @@ function Overlay() {
   const [commentsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
   const [scrollY, setScrollY] = useState(window.scrollY);
-  const [postUserInfo, setPostUserInfo] = useState({});
   const location = useLocation();
 
   function loadMoreComments() {
@@ -246,15 +245,6 @@ function Overlay() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  useEffect(() => {
-    db.collection('users')
-      .doc(postInfo.displayName)
-      .get()
-      .then((res) => {
-        setPostUserInfo(res.data());
-      });
-  }, [postInfo]);
 
   function viewProfile() {
     history.push(`/${postInfo.displayName}/`, {

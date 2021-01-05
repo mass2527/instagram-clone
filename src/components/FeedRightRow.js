@@ -56,7 +56,14 @@ function FeedRightRow({ photoURL, displayName }) {
   return (
     <S.FeedRightRow>
       <S.ProfileContainer>
-        <S.ProfileImage src={photoURL} alt="profile-image" />
+        <S.ProfileImage
+          src={
+            photoURL
+              ? photoURL
+              : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+          }
+          alt="profile-image"
+        />
       </S.ProfileContainer>
       <S.ProfileName>{displayName}</S.ProfileName>
       <S.VisitButton onClick={clickVisitButton}>Visit</S.VisitButton>

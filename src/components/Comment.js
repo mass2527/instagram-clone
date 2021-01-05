@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import FaceIcon from '@material-ui/icons/Face';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';

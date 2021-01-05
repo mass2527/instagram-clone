@@ -1,3 +1,6 @@
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
 }
@@ -15,3 +18,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+`;
+
+export default GlobalStyle;

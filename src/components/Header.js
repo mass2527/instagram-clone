@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
 import { auth } from '../firebase/firebase';
 
 const S = {
@@ -48,7 +46,6 @@ const S = {
 };
 
 function Header() {
-  const user = useSelector(selectUser);
   const history = useHistory();
   const [clickProfile, setClickProfile] = useState(false);
   const menuRef = useRef(null);
