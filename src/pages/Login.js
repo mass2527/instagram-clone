@@ -5,6 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { Spin } from '../utils/util';
 
 const S = {
+  AppBody: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+
   Login: styled.div`
     display: grid;
     place-items: center;
@@ -152,78 +158,72 @@ function Login() {
   }
 
   return (
-    <S.Login>
-      <S.LoginBox>
-        <S.Logo
-          src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"
-          alt="instagram"
-        />
+    <S.AppBody>
+      <S.Login>
+        <S.LoginBox>
+          <S.Logo
+            src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"
+            alt="instagram"
+          />
 
-        <S.LoginForm>
-          <S.LoginInput
-            onChange={(e) => {
-              setName(e.target.value);
-              if (name.includes(' ')) {
-                setError('name can not include space');
-              } else {
-                setError('');
-              }
-            }}
-            maxLength={12}
-            value={name}
-            type="text"
-            placeholder="name"
-          />
-          <S.LoginInput
-            onChange={(e) => setEmail(e.target.value)}
-            maxLength={25}
-            value={email}
-            type="email"
-            placeholder="email"
-          />
-          <S.LoginInput
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            minLength={6}
-            maxLength={15}
-            type="password"
-            placeholder="password"
-          />
-          <S.LoginButton
-            disabled={password.length < 6 || !email || name.length !== 0}
-            onClick={login}
-          >
-            {loading && clicked === 'login' ? (
-              <S.Loader
-                src="https://img2.pngio.com/loader-png-transparent-loaderpng-images-pluspng-loader-png-504_504.png"
-                alt=""
-              />
-            ) : (
-              <>Login</>
-            )}
-          </S.LoginButton>
-          <S.LoginButton
-            disabled={
-              password.length < 6 ||
-              name.length < 5 ||
-              !email ||
-              name.includes(' ')
-            }
-            onClick={signUp}
-          >
-            {loading && clicked === 'signUp' ? (
-              <S.Loader
-                src="https://img2.pngio.com/loader-png-transparent-loaderpng-images-pluspng-loader-png-504_504.png"
-                alt=""
-              />
-            ) : (
-              <>Sign Up</>
-            )}
-          </S.LoginButton>
-        </S.LoginForm>
-        {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-      </S.LoginBox>
-    </S.Login>
+          <S.LoginForm>
+            <S.LoginInput
+              onChange={(e) => {
+                setName(e.target.value);
+                if (name.includes(' ')) {
+                  setError('name can not include space');
+                } else {
+                  setError('');
+                }
+              }}
+              maxLength={12}
+              value={name}
+              type="text"
+              placeholder="name"
+            />
+            <S.LoginInput
+              onChange={(e) => setEmail(e.target.value)}
+              maxLength={25}
+              value={email}
+              type="email"
+              placeholder="email"
+            />
+            <S.LoginInput
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              minLength={6}
+              maxLength={15}
+              type="password"
+              placeholder="password"
+            />
+            <S.LoginButton disabled={password.length < 6 || !email || name.length !== 0} onClick={login}>
+              {loading && clicked === 'login' ? (
+                <S.Loader
+                  src="https://img2.pngio.com/loader-png-transparent-loaderpng-images-pluspng-loader-png-504_504.png"
+                  alt=""
+                />
+              ) : (
+                <>Login</>
+              )}
+            </S.LoginButton>
+            <S.LoginButton
+              disabled={password.length < 6 || name.length < 5 || !email || name.includes(' ')}
+              onClick={signUp}
+            >
+              {loading && clicked === 'signUp' ? (
+                <S.Loader
+                  src="https://img2.pngio.com/loader-png-transparent-loaderpng-images-pluspng-loader-png-504_504.png"
+                  alt=""
+                />
+              ) : (
+                <>Sign Up</>
+              )}
+            </S.LoginButton>
+          </S.LoginForm>
+          {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
+        </S.LoginBox>
+      </S.Login>
+    </S.AppBody>
   );
 }
 
