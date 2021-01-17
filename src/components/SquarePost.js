@@ -127,6 +127,7 @@ function SquarePost({ postId, imageURL, title, displayName }) {
     imageRef.current.addEventListener('load', handleLoad);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -18,8 +18,7 @@ const S = {
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    border-top: 1px solid
-      ${(props) => (props.borderTopOption ? 'lightgrey' : 'transparent')};
+    border-top: 1px solid ${(props) => (props.borderTopOption ? 'lightgrey' : 'transparent')};
 
     .MuiSvgIcon-root {
       margin-right: 10px;
@@ -65,6 +64,7 @@ function PostIcons({
       .onSnapshot((snapshot) => {
         setHearts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       });
+    // eslint-disable-next-line
   }, []);
 
   function clickHeart() {
@@ -124,9 +124,7 @@ function PostIcons({
           <FavoriteBorderIcon onClick={clickHeart} />
         )}
 
-        <ChatBubbleOutlineIcon
-          onClick={!commentIconDisableOption && clickViewAll}
-        />
+        <ChatBubbleOutlineIcon onClick={!commentIconDisableOption && clickViewAll} />
       </S.PostIcons>
 
       <S.PostHeart>liked {hearts.length}</S.PostHeart>

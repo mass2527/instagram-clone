@@ -100,16 +100,7 @@ const S = {
   `,
 };
 
-function Post({
-  caption,
-  displayName,
-  imageURL,
-  postId,
-  timestamp,
-  title,
-  userId,
-  userImageURL,
-}) {
+function Post({ caption, displayName, imageURL, postId, timestamp, title, userId, userImageURL }) {
   const user = useSelector(selectUser);
   const [comments, setComments] = useState([]);
   const history = useHistory();
@@ -140,6 +131,7 @@ function Post({
 
     imageRef?.current?.addEventListener('load', handleLoad);
     return () => imageRef?.current?.addEventListener('load', handleLoad);
+    // eslint-disable-next-line
   }, []);
 
   function handleLoad() {
@@ -199,21 +191,13 @@ function Post({
 
         <Comment name={displayName} content={caption} />
         {comments.length >= 3 && (
-          <S.CommentLength onClick={clickViewAll}>
-            View all {comments.length} comments
-          </S.CommentLength>
+          <S.CommentLength onClick={clickViewAll}>View all {comments.length} comments</S.CommentLength>
         )}
         {comments?.slice(-2).map((comment) => (
-          <Comment
-            key={comment.commentId}
-            name={comment.displayName}
-            content={comment.comment}
-          />
+          <Comment key={comment.commentId} name={comment.displayName} content={comment.comment} />
         ))}
 
-        <S.PostTimestamp>
-          {moment(timestamp).fromNow().toUpperCase()}
-        </S.PostTimestamp>
+        <S.PostTimestamp>{moment(timestamp).fromNow().toUpperCase()}</S.PostTimestamp>
       </S.PostBottom>
       <CommentSender postId={postId} user={user} />
     </S.Post>

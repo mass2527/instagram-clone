@@ -9,7 +9,7 @@ import SmallProfileInfoContainer from './SmallProfileInfoContainer';
 import ProfileMiddle from './ProfileMiddle';
 
 const S = {
-  Profile: styled.div`
+  ProfileContainer: styled.div`
     max-width: 975px;
     padding: 30px 20px 0px 20px;
     box-sizing: border-box;
@@ -35,7 +35,7 @@ const S = {
   `,
 };
 
-function Profile() {
+function ProfileContainer() {
   const location = useLocation();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -48,9 +48,7 @@ function Profile() {
     db.collection('posts')
       .orderBy('timestamp', 'desc')
       .onSnapshot((snapshot) => {
-        const posts = snapshot.docs.filter(
-          (doc) => doc.data().displayName === userName
-        );
+        const posts = snapshot.docs.filter((doc) => doc.data().displayName === userName);
         setPosts(
           posts.map((post) => ({
             id: post.id,
@@ -78,19 +76,15 @@ function Profile() {
     <>
       {loading && <RefreshLoader />}
 
-      <S.Profile>
+      <S.ProfileContainer>
         <ProfileHeader numberOfPosts={posts.length} />
         <SmallProfileInfoContainer numberOfPosts={posts.length} />
         <ProfileMiddle />
 
-        {location.state.option === 'liked' ? (
-          <ProfilePosts posts={likedPosts} />
-        ) : (
-          <ProfilePosts posts={posts} />
-        )}
-      </S.Profile>
+        {location.state.option === 'liked' ? <ProfilePosts posts={likedPosts} /> : <ProfilePosts posts={posts} />}
+      </S.ProfileContainer>
     </>
   );
 }
 
-export default Profile;
+export default ProfileContainer;
