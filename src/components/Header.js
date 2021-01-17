@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import DropdownMenu from './DropdownMenu';
-import { auth } from '../firebase/firebase';
+import db, { auth } from '../firebase/firebase';
+import SearchIcon from '@material-ui/icons/Search';
+import CancelIcon from '@material-ui/icons/Cancel';
+import SearchResult from './SearchResult';
 
 const S = {
   Header: styled.div`
@@ -43,13 +46,64 @@ const S = {
     border-radius: 100%;
     cursor: pointer;
   `,
+
+  Form: styled.form`
+    display: flex;
+    width: 211px;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+    position: relative;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+
+    > .MuiSvgIcon-root {
+      color: lightgray;
+      position: absolute;
+      left: 60px;
+      left: ${({ isTyped }) => (isTyped ? '190' : '60')}px;
+    }
+  `,
+
+  Input: styled.input`
+    padding: 5px 10px;
+    width: 100%;
+    border: none;
+    color: #111111;
+    background-color: transparent;
+    text-align: center;
+
+    :focus {
+      outline: none;
+    }
+  `,
 };
 
 function Header() {
-  const history = useHistory();
   const [clickProfile, setClickProfile] = useState(false);
+  const [searchName, setSearchName] = useState('');
+  const [userList, setUserList] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const history = useHistory();
   const menuRef = useRef(null);
   const iconRef = useRef(null);
+  const inputRef = useRef(null);
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.addEventListener('blur', () =>
+      setTimeout(() => {
+        setShowResults(false);
+      }, 100)
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!clickProfile) return;
+
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, [clickProfile]);
 
   function handleClick(e) {
     if (
@@ -61,12 +115,32 @@ function Header() {
     setClickProfile(false);
   }
 
-  useEffect(() => {
-    if (!clickProfile) return;
+  function handleChange(e) {
+    setSearchName(e.target.value);
+    setShowResults(true);
 
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
-  }, [clickProfile]);
+    db.collection('users').onSnapshot((snapshot) => {
+      const users = snapshot.docs.filter((doc) => doc.data().displayName.includes(e.target.value) === true);
+      setUserList(users.map((user) => user.data()));
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
+  function clickSearchIcon() {
+    inputRef.current.focus();
+  }
+
+  function clickCloseIcon() {
+    setSearchName('');
+  }
+
+  function clickForm() {
+    if (searchName === '' || showResults) return;
+    setShowResults(true);
+  }
 
   return (
     <S.Header>
@@ -74,9 +148,15 @@ function Header() {
         <S.HeaderLogo
           onClick={() => history.push('/')}
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-          alt=""
+          alt="instagram"
         />
 
+        <S.Form ref={formRef} onClick={clickForm} isTyped={searchName !== ''} onSubmit={handleSubmit}>
+          {searchName === '' && <SearchIcon onClick={clickSearchIcon} fontSize="small" />}
+          <S.Input ref={inputRef} value={searchName} onChange={handleChange} type="text" placeholder="Search" />
+          {searchName !== '' && showResults && <SearchResult userList={userList} />}
+          {searchName !== '' && <CancelIcon onClick={clickCloseIcon} fontSize="small" />}
+        </S.Form>
         <S.ProfileIconContainer>
           <S.ProfileImage
             src={
