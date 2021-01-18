@@ -1,5 +1,5 @@
 # **Instagram clone**
 
-Preview
+## Preview
 
-![Instagram clone main home](readme/../src/readme/chrome_q8qW0wNRxv.png
+![Instagram clone main home](./src/readme/main.png)
