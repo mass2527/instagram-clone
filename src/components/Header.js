@@ -88,15 +88,6 @@ function Header() {
   const menuRef = useRef(null);
   const iconRef = useRef(null);
   const inputRef = useRef(null);
-  const formRef = useRef(null);
-
-  useEffect(() => {
-    inputRef.current.addEventListener('blur', () =>
-      setTimeout(() => {
-        setShowResults(false);
-      }, 100)
-    );
-  }, []);
 
   useEffect(() => {
     if (!clickProfile) return;
@@ -151,12 +142,13 @@ function Header() {
           alt="instagram"
         />
 
-        <S.Form ref={formRef} onClick={clickForm} isTyped={searchName !== ''} onSubmit={handleSubmit}>
+        <S.Form onClick={clickForm} isTyped={searchName !== ''} onSubmit={handleSubmit}>
           {searchName === '' && <SearchIcon onClick={clickSearchIcon} fontSize="small" />}
           <S.Input ref={inputRef} value={searchName} onChange={handleChange} type="text" placeholder="Search" />
           {searchName !== '' && showResults && <SearchResult userList={userList} />}
           {searchName !== '' && <CancelIcon onClick={clickCloseIcon} fontSize="small" />}
         </S.Form>
+
         <S.ProfileIconContainer>
           <S.ProfileImage
             src={

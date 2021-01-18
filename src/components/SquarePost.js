@@ -139,7 +139,9 @@ function SquarePost({ postId, imageURL, title, displayName }) {
       ref={divRef}
     >
       <S.Post ref={imageRef} src={imageURL} alt={title} />
+
       {loading && <S.Loader></S.Loader>}
+
       {overlayOption && (
         <S.Overlay>
           <S.IconContainer>
