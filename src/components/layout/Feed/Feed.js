@@ -11,7 +11,6 @@ const S = {
     width: 100%;
     padding: 0px 20px;
     box-sizing: border-box;
-
     display: flex;
 
     @media (max-width: 1000px) {
@@ -40,7 +39,6 @@ const S = {
     width: 100%;
     height: 100%;
     background-color: white;
-
     display: grid;
     place-items: center;
   `,

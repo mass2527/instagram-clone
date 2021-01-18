@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import styled from 'styled-components';
 import Comment from '../../../shared/Comment/Comment';
 import moment from 'moment';
@@ -204,4 +204,4 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
   );
 }
 
-export default Post;
+export default memo(Post);

@@ -118,7 +118,7 @@ function LoginForm() {
       }
 
       const {
-        user: { displayName, email: userEmail, uid, photoURL },
+        user: { email: userEmail, uid, photoURL },
       } = await auth.createUserWithEmailAndPassword(email, password);
 
       await auth.currentUser.updateProfile({
@@ -126,8 +126,8 @@ function LoginForm() {
         photoURL: '',
       });
 
-      await usersCollection.doc(displayName).set({
-        displayName,
+      await usersCollection.doc(name).set({
+        displayName: name,
         email: userEmail,
         uid,
         photoURL,
@@ -153,6 +153,9 @@ function LoginForm() {
 
   return (
     <S.LoginForm>
+      {/* {setInterval(() => {
+        console.log(users);
+      }, 1000)} */}
       <S.LoginBox>
         <S.Logo
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"

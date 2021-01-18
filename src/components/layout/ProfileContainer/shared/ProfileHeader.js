@@ -47,6 +47,8 @@ const S = {
     position: relative;
     display: grid;
     place-items: center;
+    border: 1px solid lightgray;
+    border-radius: 50%;
 
     @media (max-width: 735px) {
       width: 77px;
