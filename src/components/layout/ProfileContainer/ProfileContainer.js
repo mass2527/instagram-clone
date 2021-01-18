@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import db from '../firebase/firebase';
-import RefreshLoader from './RefreshLoader';
-import ProfilePosts from './ProfilePosts';
-import ProfileHeader from './ProfileHeader';
-import SmallProfileInfoContainer from './SmallProfileInfoContainer';
-import ProfileMiddle from './ProfileMiddle';
+import db from '../../../firebase/firebase';
+import RefreshLoader from '../../RefreshLoader';
+import ProfilePosts from '../../ProfilePosts';
+import ProfileHeader from '../../ProfileHeader';
+import SmallProfileInfoContainer from '../../SmallProfileInfoContainer';
+import ProfileMiddle from '../../ProfileMiddle';
 
 const S = {
   ProfileContainer: styled.div`

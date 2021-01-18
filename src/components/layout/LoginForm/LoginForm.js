@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import db, { auth } from '../firebase/firebase';
+import db, { auth } from '../../../firebase/firebase';
 import { useHistory } from 'react-router-dom';
-import { Spin } from '../utils/util';
+import { Spin } from '../../../utils/util';
 
 const S = {
   LoginForm: styled.div`

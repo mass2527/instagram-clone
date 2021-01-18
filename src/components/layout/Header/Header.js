@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import DropdownMenu from './DropdownMenu';
-import db, { auth } from '../firebase/firebase';
+import DropdownMenu from '../../DropdownMenu';
+import db, { auth } from '../../../firebase/firebase';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
-import SearchResult from './SearchResult';
+import SearchResult from '../../SearchResult';
 
 const S = {
   Header: styled.div`

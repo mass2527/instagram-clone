@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Post from './Post';
-import db from '../firebase/firebase';
-import RefreshLoader from './RefreshLoader';
-import FeedRight from './FeedRight';
+import Post from '../../Post';
+import db from '../../../firebase/firebase';
+import RefreshLoader from '../../RefreshLoader';
+import FeedRight from '../../FeedRight';
 
 const S = {
   Feed: styled.div`
@@ -64,9 +64,7 @@ function Feed() {
       .orderBy('timestamp', 'desc')
       .limit(postsPerPage * currentPage)
       .onSnapshot((snapshot) => {
-        setPosts(
-          snapshot.docs.map((doc) => ({ postId: doc.id, ...doc.data() }))
-        );
+        setPosts(snapshot.docs.map((doc) => ({ postId: doc.id, ...doc.data() })));
 
         setLoading(false);
       });
@@ -78,8 +76,7 @@ function Feed() {
 
       if (
         // 60 === margin bottom of lastPost
-        Math.round(lastPost?.getBoundingClientRect().bottom) + 60 ===
-          window.innerHeight &&
+        Math.round(lastPost?.getBoundingClientRect().bottom) + 60 === window.innerHeight &&
         currentPage < Math.ceil(numberOfPosts / postsPerPage)
       ) {
         setCurrentPage((currentPage) => currentPage + 1);
@@ -95,30 +92,19 @@ function Feed() {
       {loading && <RefreshLoader />}
       <S.Feed>
         <S.FeedLeft ref={feedRef}>
-          {posts.map(
-            ({
-              caption,
-              displayName,
-              imageURL,
-              postId,
-              timestamp,
-              title,
-              userId,
-              userImageURL,
-            }) => (
-              <Post
-                key={postId}
-                caption={caption}
-                displayName={displayName}
-                imageURL={imageURL}
-                postId={postId}
-                title={title}
-                userId={userId}
-                userImageURL={userImageURL}
-                timestamp={new Date(timestamp?.toDate()).toUTCString()}
-              />
-            )
-          )}
+          {posts.map(({ caption, displayName, imageURL, postId, timestamp, title, userId, userImageURL }) => (
+            <Post
+              key={postId}
+              caption={caption}
+              displayName={displayName}
+              imageURL={imageURL}
+              postId={postId}
+              title={title}
+              userId={userId}
+              userImageURL={userImageURL}
+              timestamp={new Date(timestamp?.toDate()).toUTCString()}
+            />
+          ))}
         </S.FeedLeft>
 
         <FeedRight />

@@ -1,8 +1,8 @@
 import React from 'react';
-import Feed from '../components/Feed';
-import Header from '../components/Header';
+import Feed from '../components/layout/Feed/Feed';
+import Header from '../components/layout/Header/Header';
 import { S } from '../App';
-import Overlay from '../components/Overlay';
+import Overlay from '../components/layout/Overlay/Overlay';
 import { useParams } from 'react-router-dom';
 
 function Home() {

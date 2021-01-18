@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
-import db from '../firebase/firebase';
+import db from '../../../firebase/firebase';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
+import { selectUser } from '../../../features/userSlice';
 import moment from 'moment';
-import CommentSender from './CommentSender';
-import Comment from './Comment';
+import CommentSender from '../../CommentSender';
+import Comment from '../../Comment';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
-import PostImageLoader from './PostImageLoader';
-import PostIcons from './PostIcons';
-import PostRightLoader from './PostRightLoader';
+import PostImageLoader from '../../PostImageLoader';
+import PostIcons from '../../PostIcons';
+import PostRightLoader from '../../PostRightLoader';
 
 const S = {
   Overlay: styled.div`
@@ -257,21 +257,12 @@ function Overlay() {
   return (
     <S.Overlay ref={overlayRef} height={window.scrollY}>
       <S.ClostButton>
-        <CloseIcon
-          ref={buttonRef}
-          height={window.scrollY}
-          onClick={clickCloseButton}
-          fontSize="large"
-        />
+        <CloseIcon ref={buttonRef} height={window.scrollY} onClick={clickCloseButton} fontSize="large" />
       </S.ClostButton>
       <S.PostBox>
         <S.PostLeft>
           {imageLoading && <PostImageLoader />}
-          <S.PostImage
-            ref={imageRef}
-            src={postInfo.imageURL}
-            alt={postInfo.title}
-          />
+          <S.PostImage ref={imageRef} src={postInfo.imageURL} alt={postInfo.title} />
         </S.PostLeft>
 
         <S.PostRight>
@@ -287,9 +278,7 @@ function Overlay() {
             />
 
             <S.PostInfo>
-              <S.PostDisplayName onClick={viewProfile}>
-                {postInfo.displayName}
-              </S.PostDisplayName>
+              <S.PostDisplayName onClick={viewProfile}>{postInfo.displayName}</S.PostDisplayName>
               <S.PostTitle>{postInfo.title}</S.PostTitle>
             </S.PostInfo>
           </S.PostTop>
@@ -302,19 +291,17 @@ function Overlay() {
               timestampOption
             />
 
-            {comments
-              .slice(0, commentsPerPage * currentPage)
-              .map(({ // prettier ignore
-                commentId, userImageURL, displayName, comment, timestamp }) => (
-                <Comment
-                  key={commentId}
-                  name={displayName}
-                  content={comment}
-                  userImageOption
-                  timestamp={timestamp}
-                  timestampOption
-                />
-              ))}
+            {comments.slice(0, commentsPerPage * currentPage).map(({ // prettier ignore
+              commentId, userImageURL, displayName, comment, timestamp }) => (
+              <Comment
+                key={commentId}
+                name={displayName}
+                content={comment}
+                userImageOption
+                timestamp={timestamp}
+                timestampOption
+              />
+            ))}
             {}
             <S.CommentLoadMoreContainer
               hide={
@@ -337,11 +324,7 @@ function Overlay() {
             commentIconDisableOption
             borderTopOption
           />
-          <S.Timestamp>
-            {moment(
-              new Date(postInfo?.timestamp?.toDate()).toUTCString()
-            ).fromNow()}
-          </S.Timestamp>
+          <S.Timestamp>{moment(new Date(postInfo?.timestamp?.toDate()).toUTCString()).fromNow()}</S.Timestamp>
           <CommentSender postId={postId} user={user} />
         </S.PostRight>
       </S.PostBox>

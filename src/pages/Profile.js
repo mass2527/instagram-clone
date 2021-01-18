@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '../components/Header';
+import Header from '../components/layout/Header/Header';
 import { S } from '../App';
-import ProfileContainer from '../components/ProfileContainer';
+import ProfileContainer from '../components/layout/ProfileContainer/ProfileContainer';
 import { useParams } from 'react-router-dom';
-import Overlay from '../components/Overlay';
+import Overlay from '../components/layout/Overlay/Overlay';
 
 function Profile() {
   const { postId } = useParams();
