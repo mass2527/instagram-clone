@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
-import db from '../firebase/firebase';
+import { selectUser } from '../../../features/userSlice';
+import db from '../../../firebase/firebase';
 
 const S = {
   Comment: styled.div`
@@ -77,14 +77,7 @@ const S = {
   `,
 };
 
-function Comment({
-  userImageOption,
-  caption,
-  name,
-  content,
-  timestamp,
-  timestampOption,
-}) {
+function Comment({ userImageOption, caption, name, content, timestamp, timestampOption }) {
   const user = useSelector(selectUser);
   const [viewAll, setViewAll] = useState(false);
   const history = useHistory();
@@ -141,9 +134,7 @@ function Comment({
         {timestampOption && (
           <S.Timestamp>
             {timestamp
-              ? moment(new Date(timestamp?.toDate()).toUTCString())
-                  .fromNow()
-                  .replace(' ago', '')
+              ? moment(new Date(timestamp?.toDate()).toUTCString()).fromNow().replace(' ago', '')
               : 'a few seconds'}
           </S.Timestamp>
         )}

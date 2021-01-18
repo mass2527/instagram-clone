@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import db from '../firebase/firebase';
+import db from '../../../firebase/firebase';
 import firebase from 'firebase';
 
 const S = {
@@ -71,10 +71,7 @@ function CommentSender({ postId, user }) {
           placeholder="Add a comment..."
           type="text"
         />
-        <S.CommentButton
-          onClick={sendComment}
-          disabled={comment.length === 0 || !user}
-        >
+        <S.CommentButton onClick={sendComment} disabled={comment.length === 0 || !user}>
           Post
         </S.CommentButton>
       </S.CommentForm>

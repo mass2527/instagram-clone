@@ -5,8 +5,8 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
-import db from '../firebase/firebase';
+import { selectUser } from '../../../features/userSlice';
+import db from '../../../firebase/firebase';
 import firebase from 'firebase';
 
 const S = {

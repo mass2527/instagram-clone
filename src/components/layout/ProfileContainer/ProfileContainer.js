@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import db from '../../../firebase/firebase';
-import RefreshLoader from '../../RefreshLoader';
-import ProfilePosts from '../../ProfilePosts';
-import ProfileHeader from '../../ProfileHeader';
-import SmallProfileInfoContainer from '../../SmallProfileInfoContainer';
-import ProfileMiddle from '../../ProfileMiddle';
+import RefreshLoader from '../../shared/Loader/RefreshLoader';
+import ProfilePosts from './shared/ProfilePosts';
+import ProfileHeader from './shared/ProfileHeader';
+import SmallProfileInfoContainer from './shared/SmallProfileInfoContainer';
+import ProfileMiddle from './shared/ProfileMiddle';
 
 const S = {
   ProfileContainer: styled.div`

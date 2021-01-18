@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import db, { auth } from '../firebase/firebase';
+import db, { auth } from '../../../../firebase/firebase';
 import FeedRightRow from './FeedRightRow';
 
 const S = {
@@ -32,9 +32,7 @@ function FeedRight() {
 
   useEffect(() => {
     db.collection('users').onSnapshot((snapshot) => {
-      const otherUsers = snapshot.docs.filter(
-        (doc) => doc.data().displayName !== auth.currentUser?.displayName
-      );
+      const otherUsers = snapshot.docs.filter((doc) => doc.data().displayName !== auth.currentUser?.displayName);
       setUsers(otherUsers.map((doc) => doc.data()));
     });
   }, []);

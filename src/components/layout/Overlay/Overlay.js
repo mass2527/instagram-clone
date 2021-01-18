@@ -5,13 +5,13 @@ import db from '../../../firebase/firebase';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/userSlice';
 import moment from 'moment';
-import CommentSender from '../../CommentSender';
-import Comment from '../../Comment';
+import CommentSender from '../../shared/Comment/CommentSender';
+import Comment from '../../shared/Comment/Comment';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
-import PostImageLoader from '../../PostImageLoader';
-import PostIcons from '../../PostIcons';
-import PostRightLoader from '../../PostRightLoader';
+import PostImageLoader from '../../shared/Loader/PostImageLoader';
+import PostIcons from '../../shared/PostIcons/PostIcons';
+import PostRightLoader from './shared/PostRightLoader';
 
 const S = {
   Overlay: styled.div`

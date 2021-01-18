@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Post from '../../Post';
+import Post from './shared/Post';
 import db from '../../../firebase/firebase';
-import RefreshLoader from '../../RefreshLoader';
-import FeedRight from '../../FeedRight';
+import RefreshLoader from '../../shared/Loader/RefreshLoader';
+import FeedRight from './shared/FeedRight';
 
 const S = {
   Feed: styled.div`

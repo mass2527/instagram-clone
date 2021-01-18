@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import FaceIcon from '@material-ui/icons/Face';
 import PublishIcon from '@material-ui/icons/Publish';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import db, { auth, storage } from '../firebase/firebase';
+import db, { auth, storage } from '../../../../firebase/firebase';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
+import { selectUser } from '../../../../features/userSlice';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -217,20 +217,10 @@ function DropdownMenu({ isOpen }) {
 
   return (
     <S.DropdownMenu ref={menuRef} isOpen={isOpen}>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
+      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
+            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>

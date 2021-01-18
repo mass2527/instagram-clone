@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import db from '../firebase/firebase';
+import db from '../../../../firebase/firebase';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 const S = {

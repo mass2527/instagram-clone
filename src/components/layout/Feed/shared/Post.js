@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Comment from './Comment';
+import Comment from '../../../shared/Comment/Comment';
 import moment from 'moment';
-import db from '../firebase/firebase';
+import db from '../../../../firebase/firebase';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../features/userSlice';
+import { selectUser } from '../../../../features/userSlice';
 import { useHistory } from 'react-router-dom';
-import CommentSender from './CommentSender';
-import PostImageLoader from './PostImageLoader';
-import PostIcons from './PostIcons';
+import CommentSender from '../../../shared/Comment/CommentSender';
+import PostImageLoader from '../../../shared/Loader/PostImageLoader';
+import PostIcons from '../../../shared/PostIcons/PostIcons';
 
 const S = {
   Post: styled.div`

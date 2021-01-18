@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { selectUser } from '../features/userSlice';
-import db, { auth, storage } from '../firebase/firebase';
+import { selectUser } from '../../../../features/userSlice';
+import db, { auth, storage } from '../../../../firebase/firebase';
 
 const Spin = keyframes`
     from{
@@ -124,9 +124,7 @@ function ProfileHeader({ numberOfPosts }) {
       return setProfileImageLoading(false);
     }
 
-    const uploadTask = storage
-      .ref(`/profileImages/${currentFile.name}`)
-      .put(currentFile);
+    const uploadTask = storage.ref(`/profileImages/${currentFile.name}`).put(currentFile);
 
     uploadTask.on(
       'state_changed',
