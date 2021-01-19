@@ -122,7 +122,9 @@ function Header() {
     setShowResults(true);
 
     db.collection('users').onSnapshot((snapshot) => {
-      const users = snapshot.docs.filter((doc) => doc.data().displayName.includes(e.target.value) === true);
+      const users = snapshot.docs.filter(
+        (doc) => doc.data().displayName.toLowerCase().includes(e.target.value) === true
+      );
       setUserList(users.map((user) => user.data()));
     });
   }
@@ -156,7 +158,9 @@ function Header() {
         <S.Form onClick={clickForm} isTyped={searchName !== ''} onSubmit={handleSubmit}>
           {searchName === '' && <SearchIcon onClick={clickSearchIcon} fontSize="small" />}
           <S.Input ref={inputRef} value={searchName} onChange={handleChange} type="text" placeholder="Search" />
-          {searchName !== '' && showResults && <SearchResult userList={userList} />}
+          {searchName !== '' && showResults && (
+            <SearchResult clearInput={() => setSearchName('')} userList={userList} />
+          )}
           {searchName !== '' && <CancelIcon onClick={clickCloseIcon} fontSize="small" />}
         </S.Form>
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const S = {
     border: 1px solid lightgray;
   `,
 
-  UserImageAndName: styled.a`
+  UserImageAndName: styled.div`
     padding: 8px 14px;
     height: 50px;
     display: flex;
@@ -48,12 +48,17 @@ const S = {
   `,
 };
 
-function SearchResult({ userList }) {
+function SearchResult({ userList, clearInput }) {
   const history = useHistory();
-  const resultRef = useRef(null);
+
+  useEffect(() => {
+    window.addEventListener('click', handleClick);
+  }, []);
+
+  function handleClick(e) {}
 
   return (
-    <S.SearchResult ref={resultRef}>
+    <S.SearchResult>
       {userList.length !== 0 ? (
         userList.map((user) => (
           <S.UserImageAndName
@@ -62,6 +67,7 @@ function SearchResult({ userList }) {
               history.push(`/${user.displayName}/`, {
                 userName: user.displayName,
               });
+              clearInput();
             }}
           >
             <S.Image

@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components';
+import FollowingModal from '../../../shared/Dialog/FollowingModal';
+import FollowerModal from '../../../shared/Dialog/FollowerModal';
 
 const S = {
   SmallProfileInfoContainer: styled.div`
@@ -21,6 +23,7 @@ const S = {
     color: #8e8e8e;
     display: flex;
     flex-direction: column;
+    cursor: ${({ pointer }) => pointer && 'pointer'};
   `,
 
   OptionNumber: styled.span`
@@ -29,20 +32,28 @@ const S = {
   `,
 };
 
-function SmallProfileInfoContainer({ numberOfPosts }) {
+function SmallProfileInfoContainer({ numberOfPosts, numberOfFollower, numberOfFollow }) {
+  const [openFollowingModal, setOpenFollowingModal] = useState(false);
+  const [openFollowerModal, setOpenFollowerModal] = useState(false);
+
   return (
     <S.SmallProfileInfoContainer>
       <S.SmallProfileInfoOption>
         POST<S.OptionNumber>{numberOfPosts}</S.OptionNumber>
       </S.SmallProfileInfoOption>
-      <S.SmallProfileInfoOption>
-        FOLLOWER<S.OptionNumber>0</S.OptionNumber>
+
+      <S.SmallProfileInfoOption onClick={() => setOpenFollowerModal(true)} pointer={true}>
+        FOLLOWER<S.OptionNumber>{numberOfFollower}</S.OptionNumber>
       </S.SmallProfileInfoOption>
-      <S.SmallProfileInfoOption>
-        FOLLOW<S.OptionNumber>0</S.OptionNumber>
+
+      <S.SmallProfileInfoOption onClick={() => setOpenFollowingModal(true)} pointer={true}>
+        FOLLOW<S.OptionNumber>{numberOfFollow}</S.OptionNumber>
       </S.SmallProfileInfoOption>
+
+      {openFollowingModal && <FollowingModal reset={() => setOpenFollowingModal(false)} />}
+      {openFollowerModal && <FollowerModal reset={() => setOpenFollowerModal(false)} />}
     </S.SmallProfileInfoContainer>
   );
 }
 
-export default SmallProfileInfoContainer;
+export default memo(SmallProfileInfoContainer);

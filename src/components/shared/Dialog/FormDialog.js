@@ -13,7 +13,6 @@ import db from '../../../firebase/firebase';
 export default function FormDialog() {
   const user = useSelector(selectUser);
   const [open, setOpen] = React.useState(false);
-
   const [text, setText] = useState('');
 
   const handleClickOpen = () => {

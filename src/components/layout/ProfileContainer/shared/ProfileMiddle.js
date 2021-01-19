@@ -32,8 +32,7 @@ const S = {
     box-sizing: border-box;
 
     @media (min-width: 735px) {
-      border-top: 1px solid
-        ${(props) => (props.borderTop ? '#262626' : 'transparent')};
+      border-top: 1px solid ${(props) => (props.borderTop ? '#262626' : 'transparent')};
 
       > .MuiSvgIcon-root {
         display: none;
@@ -64,11 +63,7 @@ function ProfileMiddle() {
           }}
         >
           <S.OptionName>POST</S.OptionName>
-          <AppsIcon
-            color={
-              location.pathname.split('/')[2] === '' ? 'primary' : 'action'
-            }
-          />
+          <AppsIcon color={location.pathname.split('/')[2] === '' ? 'primary' : 'action'} />
         </S.ProfileMiddleOption>
         <S.ProfileMiddleOption
           borderTop={location.pathname.split('/')[2] === 'liked'}
@@ -80,11 +75,7 @@ function ProfileMiddle() {
           }}
         >
           <S.OptionName>LIKED</S.OptionName>
-          <FavoriteBorderIcon
-            color={
-              location.pathname.split('/')[2] === 'liked' ? 'primary' : 'action'
-            }
-          />
+          <FavoriteBorderIcon color={location.pathname.split('/')[2] === 'liked' ? 'primary' : 'action'} />
         </S.ProfileMiddleOption>
       </S.ProfileMiddleOptionContainer>
     </S.ProfileMiddle>

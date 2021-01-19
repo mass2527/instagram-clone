@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import db, { auth } from '../../../../firebase/firebase';
 
 const S = {
   FeedRightRow: styled.div`
-    height: 32px;
+    width: 100%;
+    height: 48px;
     padding: 8px 16px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  `,
+
+  ImageAndName: styled.div`
     display: flex;
     align-items: center;
   `,
 
-  ProfileContainer: styled.div`
+  ImageContainer: styled.div`
     width: 32px;
     height: 32px;
     display: grid;
@@ -21,26 +29,24 @@ const S = {
     cursor: pointer;
   `,
 
-  ProfileImage: styled.img`
+  Image: styled.img`
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    margin-right: 5px;
   `,
 
-  ProfileName: styled.span`
-    width: 170px;
+  Name: styled.span`
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
   `,
 
   Button: styled.button`
-    width: 20px;
     color: #3aacf7;
     background-color: transparent;
     border: none;
     cursor: pointer;
+    margin-left: 15px;
 
     :focus {
       outline: none;
@@ -48,7 +54,7 @@ const S = {
   `,
 };
 
-function FeedRightRow({ photoURL, displayName }) {
+function FeedRightRow({ photoURL, displayName, closeModal }) {
   const history = useHistory();
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -66,6 +72,10 @@ function FeedRightRow({ photoURL, displayName }) {
       userName: displayName,
       photoURL,
     });
+
+    if (closeModal) {
+      closeModal();
+    }
   }
 
   function clickFollow() {
@@ -87,18 +97,21 @@ function FeedRightRow({ photoURL, displayName }) {
 
   return (
     <S.FeedRightRow>
-      {console.log(auth.currentUser)}
-      <S.ProfileContainer onClick={viewUserProfile}>
-        <S.ProfileImage
-          src={photoURL ? photoURL : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'}
-          alt="profile-image"
-        />
-      </S.ProfileContainer>
-      <S.ProfileName onClick={viewUserProfile}>{displayName}</S.ProfileName>
-      {/* <S.Button onClick={clickVisitButton}>Visit</S.Button> */}
-      <S.Button onClick={clickFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</S.Button>
+      <S.ImageAndName>
+        <S.ImageContainer onClick={viewUserProfile}>
+          <S.Image
+            src={photoURL ? photoURL : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'}
+            alt="profile-image"
+          />
+        </S.ImageContainer>
+        <S.Name onClick={viewUserProfile}>{displayName}</S.Name>
+      </S.ImageAndName>
+
+      {auth.currentUser.displayName !== displayName && (
+        <S.Button onClick={clickFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</S.Button>
+      )}
     </S.FeedRightRow>
   );
 }
 
-export default FeedRightRow;
+export default memo(FeedRightRow);

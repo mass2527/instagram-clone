@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import db from '../../../firebase/firebase';
 import RefreshLoader from '../../shared/Loader/RefreshLoader';
 import ProfilePosts from './shared/ProfilePosts';
@@ -40,6 +40,24 @@ function ProfileContainer() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [likedPosts, setLikedPosts] = useState([]);
+  const [numberOfFollow, setNumberOfFollow] = useState(0);
+  const [numberOfFollower, setNumberOfFollower] = useState(0);
+
+  useEffect(() => {
+    db.collection('users')
+      .doc(location.state.userName)
+      .collection('follow')
+      .onSnapshot((snapshot) => {
+        setNumberOfFollow(snapshot.docs.length);
+      });
+
+    db.collection('users')
+      .doc(location.state.userName)
+      .collection('follower')
+      .onSnapshot((snapshot) => {
+        setNumberOfFollower(snapshot.docs.length);
+      });
+  }, [location?.state?.userName]);
 
   useEffect(() => {
     setLoading(true);
@@ -77,8 +95,16 @@ function ProfileContainer() {
       {loading && <RefreshLoader />}
 
       <S.ProfileContainer>
-        <ProfileHeader numberOfPosts={posts.length} />
-        <SmallProfileInfoContainer numberOfPosts={posts.length} />
+        <ProfileHeader
+          numberOfPosts={posts.length}
+          numberOfFollower={numberOfFollower}
+          numberOfFollow={numberOfFollow}
+        />
+        <SmallProfileInfoContainer
+          numberOfPosts={posts.length}
+          numberOfFollower={numberOfFollower}
+          numberOfFollow={numberOfFollow}
+        />
         <ProfileMiddle />
 
         {location.state.option === 'liked' ? <ProfilePosts posts={likedPosts} /> : <ProfilePosts posts={posts} />}

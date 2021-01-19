@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -132,4 +132,4 @@ function PostIcons({
   );
 }
 
-export default PostIcons;
+export default memo(PostIcons);

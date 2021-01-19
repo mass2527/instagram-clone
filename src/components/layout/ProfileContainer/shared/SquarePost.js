@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
@@ -158,4 +158,4 @@ function SquarePost({ postId, imageURL, title, displayName }) {
   );
 }
 
-export default SquarePost;
+export default memo(SquarePost);

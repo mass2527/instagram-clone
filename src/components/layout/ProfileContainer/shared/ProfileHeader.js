@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { selectUser } from '../../../../features/userSlice';
 import db, { auth, storage } from '../../../../firebase/firebase';
-import FormDialog from '../../../shared/FormDialog/FormDialog';
+import FormDialog from '../../../shared/Dialog/FormDialog';
+import FollowingModal from '../../../shared/Dialog/FollowingModal';
+import FollowerModal from '../../../shared/Dialog/FollowerModal';
 
 const Spin = keyframes`
     from{
@@ -44,6 +46,8 @@ const S = {
     @media (max-width: 735px) {
       display: flex;
       align-items: center;
+      padding-top: 18px;
+      box-sizing: border-box;
     }
   `,
 
@@ -92,6 +96,7 @@ const S = {
     font-size: 28px;
     font-weight: 300;
     margin-right: 20px;
+    padding-bottom: 7px;
   `,
 
   InfoContainer: styled.div`
@@ -106,6 +111,7 @@ const S = {
     font-size: 16px;
     margin-right: 15px;
     font-weight: 500;
+    cursor: ${({ pointer }) => pointer && 'pointer'};
   `,
 
   Bio: styled.p`
@@ -121,14 +127,15 @@ const S = {
   `,
 };
 
-function ProfileHeader({ numberOfPosts }) {
+function ProfileHeader({ numberOfPosts, numberOfFollower, numberOfFollow }) {
   const user = useSelector(selectUser);
   const [profileImageLoading, setProfileImageLoading] = useState(false);
   const [currentProfileUserInfo, setCurrentProfileUserInfo] = useState({});
+  const [openFollowingModal, setOpenFollowingModal] = useState(false);
+  const [openFollowerModal, setOpenFollowerModal] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const inputRef = useRef(null);
   const location = useLocation();
-
   useEffect(() => {
     window.addEventListener('resize', () => setWidth(window.innerWidth));
 
@@ -227,8 +234,15 @@ function ProfileHeader({ numberOfPosts }) {
           </S.NameAndEdit>
           <S.InfoContainer>
             <S.InfoOption>POST {numberOfPosts}</S.InfoOption>
-            <S.InfoOption>FOLLOWER 0</S.InfoOption>
-            <S.InfoOption>FOLLOW 0</S.InfoOption>
+            <S.InfoOption pointer={true} onClick={() => setOpenFollowerModal(true)}>
+              FOLLOWER {numberOfFollower}
+            </S.InfoOption>
+            <S.InfoOption pointer={true} onClick={() => setOpenFollowingModal(true)}>
+              FOLLOW {numberOfFollow}
+            </S.InfoOption>
+
+            {openFollowingModal && <FollowingModal reset={() => setOpenFollowingModal(false)} />}
+            {openFollowerModal && <FollowerModal reset={() => setOpenFollowerModal(false)} />}
           </S.InfoContainer>
           {currentProfileUserInfo?.bio && width > 735 && <S.Bio>{currentProfileUserInfo.bio}</S.Bio>}
         </S.HeaderRight>
@@ -240,4 +254,4 @@ function ProfileHeader({ numberOfPosts }) {
   );
 }
 
-export default ProfileHeader;
+export default memo(ProfileHeader);
