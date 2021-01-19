@@ -30,11 +30,15 @@ export default function FormDialog() {
 
     // update firebase bio
 
-    db.collection('users').doc(user.displayName).update({
-      bio: text,
-    });
-
-    handleClose();
+    db.collection('users')
+      .doc(user.displayName)
+      .update({
+        bio: text,
+      })
+      .then(() => {
+        handleClose();
+        window.location.reload();
+      });
   };
 
   return (

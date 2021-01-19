@@ -18,6 +18,11 @@ const Spin = keyframes`
 const S = {
   ProfileHeader: styled.div`
     display: flex;
+    flex-direction: column;
+  `,
+
+  HeaderContainer: styled.div`
+    display: flex;
     margin-bottom: 44px;
 
     @media (max-width: 735px) {
@@ -105,6 +110,14 @@ const S = {
 
   Bio: styled.p`
     margin-top: 10px;
+
+    @media (max-width: 735px) {
+      margin: 0px;
+    }
+  `,
+
+  HeaderBottom: styled.div`
+    padding: 0px 16px 16px 16px;
   `,
 };
 
@@ -112,8 +125,15 @@ function ProfileHeader({ numberOfPosts }) {
   const user = useSelector(selectUser);
   const [profileImageLoading, setProfileImageLoading] = useState(false);
   const [currentProfileUserInfo, setCurrentProfileUserInfo] = useState({});
+  const [width, setWidth] = useState(window.innerWidth);
   const inputRef = useRef(null);
   const location = useLocation();
+
+  useEffect(() => {
+    window.addEventListener('resize', () => setWidth(window.innerWidth));
+
+    return () => window.removeEventListener('resize', () => setWidth(window.innerWidth));
+  }, []);
 
   useEffect(() => {
     db.collection('users')
@@ -167,50 +187,55 @@ function ProfileHeader({ numberOfPosts }) {
 
   return (
     <S.ProfileHeader>
-      <S.HeaderLeft>
-        <S.ImageContainer>
-          <S.Image
-            isLoading={profileImageLoading}
-            onClick={() => {
-              if (user.displayName !== location.state.userName) return;
-              inputRef.current.click();
-            }}
-            src={
-              !currentProfileUserInfo.photoURL
-                ? 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
-                : currentProfileUserInfo.photoURL
-            }
-            alt="user-profile"
-          />
-          {profileImageLoading && (
-            <S.ImageLoader
-              src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetdrawings.com%2Ffree-icon-bw%2Fwaiting-icon-gif-13.png&f=1&nofb=1"
-              alt="loader"
+      <S.HeaderContainer>
+        <S.HeaderLeft>
+          <S.ImageContainer>
+            <S.Image
+              isLoading={profileImageLoading}
+              onClick={() => {
+                if (user.displayName !== location.state.userName) return;
+                inputRef.current.click();
+              }}
+              src={
+                !currentProfileUserInfo.photoURL
+                  ? 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+                  : currentProfileUserInfo.photoURL
+              }
+              alt="user-profile"
             />
-          )}
-        </S.ImageContainer>
+            {profileImageLoading && (
+              <S.ImageLoader
+                src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetdrawings.com%2Ffree-icon-bw%2Fwaiting-icon-gif-13.png&f=1&nofb=1"
+                alt="loader"
+              />
+            )}
+          </S.ImageContainer>
 
-        <S.Input
-          onChange={handleFileChange}
-          ref={inputRef}
-          type="file"
-          accept="image/jpeg,
+          <S.Input
+            onChange={handleFileChange}
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg,
               image/jpg,
               image/png"
-        />
-      </S.HeaderLeft>
-      <S.HeaderRight>
-        <S.NameAndEdit>
-          <S.Name>{location.state.userName}</S.Name>
-          {user?.displayName === location.state.userName && <FormDialog />}
-        </S.NameAndEdit>
-        <S.InfoContainer>
-          <S.InfoOption>POST {numberOfPosts}</S.InfoOption>
-          <S.InfoOption>FOLLOWER 0</S.InfoOption>
-          <S.InfoOption>FOLLOW 0</S.InfoOption>
-        </S.InfoContainer>
-        {currentProfileUserInfo?.bio && <S.Bio>{currentProfileUserInfo.bio}</S.Bio>}
-      </S.HeaderRight>
+          />
+        </S.HeaderLeft>
+        <S.HeaderRight>
+          <S.NameAndEdit>
+            <S.Name>{location.state.userName}</S.Name>
+            {user?.displayName === location.state.userName && <FormDialog />}
+          </S.NameAndEdit>
+          <S.InfoContainer>
+            <S.InfoOption>POST {numberOfPosts}</S.InfoOption>
+            <S.InfoOption>FOLLOWER 0</S.InfoOption>
+            <S.InfoOption>FOLLOW 0</S.InfoOption>
+          </S.InfoContainer>
+          {currentProfileUserInfo?.bio && width > 735 && <S.Bio>{currentProfileUserInfo.bio}</S.Bio>}
+        </S.HeaderRight>
+      </S.HeaderContainer>
+      <S.HeaderBottom>
+        {currentProfileUserInfo?.bio && width <= 735 && <S.Bio>{currentProfileUserInfo.bio}</S.Bio>}
+      </S.HeaderBottom>
     </S.ProfileHeader>
   );
 }
