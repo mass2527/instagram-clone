@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
@@ -51,20 +51,12 @@ const S = {
 function SearchResult({ userList }) {
   const history = useHistory();
   const resultRef = useRef(null);
-  const divRef = useRef(null);
-
-  useEffect(() => {
-    // resultRef.current.firstElementChild.style.backgroundColor = '#fafafa';
-    // resultRef.current.firstElementChild.focus();
-    divRef.current?.focus();
-  }, []);
 
   return (
     <S.SearchResult ref={resultRef}>
       {userList.length !== 0 ? (
         userList.map((user) => (
           <S.UserImageAndName
-            ref={divRef}
             tabindex="0"
             onClick={() => {
               history.push(`/${user.displayName}/`, {

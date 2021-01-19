@@ -6,6 +6,8 @@ import db, { auth } from '../../../firebase/firebase';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import SearchResult from './shared/SearchResult';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../features/userSlice';
 
 const S = {
   Header: styled.div`
@@ -63,6 +65,14 @@ const S = {
       left: 60px;
       left: ${({ isTyped }) => (isTyped ? '190' : '60')}px;
     }
+
+    @media (max-width: 500px) {
+      width: 150px;
+
+      > .MuiSvgIcon-root {
+        display: none;
+      }
+    }
   `,
 
   Input: styled.input`
@@ -80,6 +90,7 @@ const S = {
 };
 
 function Header() {
+  const user = useSelector(selectUser);
   const [clickProfile, setClickProfile] = useState(false);
   const [searchName, setSearchName] = useState('');
   const [userList, setUserList] = useState([]);
@@ -152,8 +163,8 @@ function Header() {
         <S.ProfileIconContainer>
           <S.ProfileImage
             src={
-              auth.currentUser?.photoURL
-                ? auth.currentUser.photoURL
+              user?.userImageURL
+                ? user.userImageURL
                 : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
             }
             alt="login-user-profile-image"

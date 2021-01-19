@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { selectUser } from '../../../../features/userSlice';
 import db, { auth, storage } from '../../../../firebase/firebase';
+import FormDialog from '../../../shared/FormDialog/FormDialog';
 
 const Spin = keyframes`
     from{
@@ -24,14 +25,14 @@ const S = {
     }
   `,
 
-  ProfileHeaderLeft: styled.div`
+  HeaderLeft: styled.div`
     flex: 1;
     display: flex;
     justify-content: center;
     margin-right: 30px;
   `,
 
-  ProfileHeaderRight: styled.div`
+  HeaderRight: styled.div`
     width: 613px;
     color: #262626;
 
@@ -41,7 +42,7 @@ const S = {
     }
   `,
 
-  ProfileImageContainer: styled.div`
+  ImageContainer: styled.div`
     width: 150px;
     height: 150px;
     position: relative;
@@ -56,7 +57,7 @@ const S = {
     }
   `,
 
-  ProfileImage: styled.img`
+  Image: styled.img`
     width: 100%;
     height: 100%;
     cursor: pointer;
@@ -65,24 +66,30 @@ const S = {
     opacity: ${(props) => props.isLoading && 0.5};
   `,
 
-  ProfileImageLoader: styled.img`
+  ImageLoader: styled.img`
     position: absolute;
     width: 25px;
     height: 25px;
     animation: ${Spin} 2s infinite linear;
   `,
 
-  FileInput: styled.input`
+  Input: styled.input`
     display: none;
   `,
 
-  ProfileDisplayName: styled.div`
-    font-size: 28px;
-    font-weight: 300;
+  NameAndEdit: styled.div`
+    display: flex;
+    align-items: center;
     margin-bottom: 20px;
   `,
 
-  ProfileInfoContainer: styled.div`
+  Name: styled.span`
+    font-size: 28px;
+    font-weight: 300;
+    margin-right: 20px;
+  `,
+
+  InfoContainer: styled.div`
     display: flex;
 
     @media (max-width: 735px) {
@@ -90,19 +97,23 @@ const S = {
     }
   `,
 
-  ProfileInfoOption: styled.span`
+  InfoOption: styled.span`
     font-size: 16px;
     margin-right: 15px;
     font-weight: 500;
+  `,
+
+  Bio: styled.p`
+    margin-top: 10px;
   `,
 };
 
 function ProfileHeader({ numberOfPosts }) {
   const user = useSelector(selectUser);
   const [profileImageLoading, setProfileImageLoading] = useState(false);
+  const [currentProfileUserInfo, setCurrentProfileUserInfo] = useState({});
   const inputRef = useRef(null);
   const location = useLocation();
-  const [currentProfileUserInfo, setCurrentProfileUserInfo] = useState({});
 
   useEffect(() => {
     db.collection('users')
@@ -156,30 +167,30 @@ function ProfileHeader({ numberOfPosts }) {
 
   return (
     <S.ProfileHeader>
-      <S.ProfileHeaderLeft>
-        <S.ProfileImageContainer>
-          <S.ProfileImage
+      <S.HeaderLeft>
+        <S.ImageContainer>
+          <S.Image
             isLoading={profileImageLoading}
             onClick={() => {
               if (user.displayName !== location.state.userName) return;
               inputRef.current.click();
             }}
             src={
-              currentProfileUserInfo.photoURL
-                ? currentProfileUserInfo.photoURL
-                : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+              !currentProfileUserInfo.photoURL
+                ? 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+                : currentProfileUserInfo.photoURL
             }
             alt="user-profile"
           />
           {profileImageLoading && (
-            <S.ProfileImageLoader
+            <S.ImageLoader
               src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetdrawings.com%2Ffree-icon-bw%2Fwaiting-icon-gif-13.png&f=1&nofb=1"
               alt="loader"
             />
           )}
-        </S.ProfileImageContainer>
+        </S.ImageContainer>
 
-        <S.FileInput
+        <S.Input
           onChange={handleFileChange}
           ref={inputRef}
           type="file"
@@ -187,15 +198,19 @@ function ProfileHeader({ numberOfPosts }) {
               image/jpg,
               image/png"
         />
-      </S.ProfileHeaderLeft>
-      <S.ProfileHeaderRight>
-        <S.ProfileDisplayName>{location.state.userName}</S.ProfileDisplayName>
-        <S.ProfileInfoContainer>
-          <S.ProfileInfoOption>POST {numberOfPosts}</S.ProfileInfoOption>
-          <S.ProfileInfoOption>FOLLOWER 0</S.ProfileInfoOption>
-          <S.ProfileInfoOption>FOLLOW 0</S.ProfileInfoOption>
-        </S.ProfileInfoContainer>
-      </S.ProfileHeaderRight>
+      </S.HeaderLeft>
+      <S.HeaderRight>
+        <S.NameAndEdit>
+          <S.Name>{location.state.userName}</S.Name>
+          {user?.displayName === location.state.userName && <FormDialog />}
+        </S.NameAndEdit>
+        <S.InfoContainer>
+          <S.InfoOption>POST {numberOfPosts}</S.InfoOption>
+          <S.InfoOption>FOLLOWER 0</S.InfoOption>
+          <S.InfoOption>FOLLOW 0</S.InfoOption>
+        </S.InfoContainer>
+        {currentProfileUserInfo?.bio && <S.Bio>{currentProfileUserInfo.bio}</S.Bio>}
+      </S.HeaderRight>
     </S.ProfileHeader>
   );
 }
