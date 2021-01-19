@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import DropdownMenu from './shared/DropdownMenu';
 import db, { auth } from '../../../firebase/firebase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -8,6 +8,10 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import SearchResult from './shared/SearchResult';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/userSlice';
+import HomeIcon from '@material-ui/icons/Home';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import SendIcon from '@material-ui/icons/Send';
+import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 
 const S = {
   Header: styled.div`
@@ -22,7 +26,7 @@ const S = {
     z-index: 1;
   `,
 
-  HeaderMiddle: styled.div`
+  Center: styled.div`
     height: 54px;
     max-width: 975px;
     width: 100%;
@@ -33,19 +37,41 @@ const S = {
     align-items: center;
   `,
 
-  HeaderLogo: styled.img`
+  Logo: styled.img`
     margin-top: 6px;
     cursor: pointer;
   `,
 
-  ProfileIconContainer: styled.div`
+  Icons: styled.div`
+    display: flex;
+    align-items: center;
     position: relative;
+  `,
+
+  HomeIconContainer: styled.div`
+    > .MuiSvgIcon-root {
+      cursor: pointer;
+      font-size: 28px;
+      margin-right: 10px;
+      color: ${({ isHome }) => (isHome ? 'black' : 'lightgray')};
+    }
+  `,
+
+  SendIconContainer: styled.div`
+    > .MuiSvgIcon-root {
+      cursor: pointer;
+      font-size: 28px;
+      margin-right: 10px;
+      color: ${({ isDM }) => (isDM ? 'black' : 'lightgray')};
+    }
   `,
 
   ProfileImage: styled.img`
     width: 22px;
     height: 22px;
-    border-radius: 100%;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
     cursor: pointer;
   `,
 
@@ -67,7 +93,7 @@ const S = {
     }
 
     @media (max-width: 500px) {
-      width: 150px;
+      width: 100px;
 
       > .MuiSvgIcon-root {
         display: none;
@@ -99,6 +125,7 @@ function Header() {
   const menuRef = useRef(null);
   const iconRef = useRef(null);
   const inputRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     if (!clickProfile) return;
@@ -148,8 +175,8 @@ function Header() {
 
   return (
     <S.Header>
-      <S.HeaderMiddle>
-        <S.HeaderLogo
+      <S.Center>
+        <S.Logo
           onClick={() => history.push('/')}
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
           alt="instagram"
@@ -164,7 +191,14 @@ function Header() {
           {searchName !== '' && <CancelIcon onClick={clickCloseIcon} fontSize="small" />}
         </S.Form>
 
-        <S.ProfileIconContainer>
+        <S.Icons>
+          <S.HomeIconContainer isHome={location.pathname === '/'}>
+            <HomeIcon onClick={() => history.push('/')} />
+          </S.HomeIconContainer>
+          <S.SendIconContainer isDM={location.pathname.includes('direct')}>
+            <SendIcon onClick={() => history.push('/direct/inbox')} />
+          </S.SendIconContainer>
+
           <S.ProfileImage
             src={
               user?.userImageURL
@@ -179,8 +213,8 @@ function Header() {
           />
 
           <DropdownMenu ref={menuRef} isOpen={clickProfile} />
-        </S.ProfileIconContainer>
-      </S.HeaderMiddle>
+        </S.Icons>
+      </S.Center>
     </S.Header>
   );
 }

@@ -7,6 +7,7 @@ import { signIn, signOut } from './features/userSlice';
 import { useDispatch } from 'react-redux';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
+import DM from './pages/DM';
 
 export const S = {
   App: styled.div`
@@ -47,9 +48,10 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/p/:postId/" component={location.state?.userName ? Profile : Home} />
+        <Route path="/direct" component={DM} />
         <Route exact path="/:userName/" component={Profile} />
         <Route exact path="/:userName/:option/" component={Profile} />
-        <Route exact path="/" component={Home} />
+        <Route path="/" component={Home} />
       </Switch>
     </S.App>
   );
