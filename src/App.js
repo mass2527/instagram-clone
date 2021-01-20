@@ -49,7 +49,8 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/p/:postId/" component={location.state?.userName ? Profile : Home} />
-        <Route exact path="/direct/:state/" component={DM} />
+        <Route exact path="/direct/:state/:currentChatUserName" component={DM} />
+        <Route path="/direct/:state/" component={DM} />
         <Route exact path="/:userName/" component={Profile} />
         <Route exact path="/:userName/:option/" component={Profile} />
         <Route path="/" component={Home} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -6,6 +6,10 @@ import Fade from '@material-ui/core/Fade';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
+import db from '../../../firebase/firebase';
+import UserImageAndName from '../UserImageAndName/UserImageAndName';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../features/userSlice';
 
 const S = {
   Header: styled.header`
@@ -27,10 +31,15 @@ const S = {
   `,
 
   Button: styled.button`
-    color: #cdeafd;
     border: none;
     font-weight: bold;
     background-color: transparent;
+    color: ${({ disabled }) => (disabled ? '#cdeafd' : '#52c1fb')};
+    cursor: ${({ disabled }) => !disabled && 'pointer'};
+
+    :focus {
+      outline: none;
+    }
   `,
 
   To: styled.div`
@@ -45,10 +54,14 @@ const S = {
   Input: styled.input`
     height: 38px;
     width: 100%;
-    padding: 4px 16px;
+    padding: 4px 0px;
     box-sizing: border-box;
     margin-left: 16px;
     border: none;
+
+    :disabled {
+      background-color: transparent;
+    }
 
     ::placeholder {
       color: #c7c7c7;
@@ -63,6 +76,33 @@ const S = {
     min-height: 200px;
     max-height: 380px;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+  `,
+
+  NoUser: styled.span`
+    color: #8e8e8e;
+    font-size: 14px;
+    padding: 16px;
+  `,
+
+  SelectedUserContainer: styled.div`
+    color: #0095f6;
+    background-color: #e0f1ff;
+    padding: 6px 12px;
+    border-radius: 5px;
+    margin-left: 10px;
+    display: flex;
+
+    > .MuiSvgIcon-root {
+      margin-left: 3px;
+
+      cursor: pointer;
+    }
+  `,
+
+  SelectedUser: styled.span`
+    font-size: 14px;
   `,
 };
 
@@ -85,22 +125,71 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MessageModal() {
+  const user = useSelector(selectUser);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
+  const [userList, setUserList] = useState([]);
   const history = useHistory();
+  const inputRef = useRef(null);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUserPhotoURL, setSelectedUserPhotoURL] = useState('');
 
   useEffect(() => {
     setOpen(true);
+
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
 
     // eslint-disable-next-line
   }, []);
 
   const handleClose = () => {
     history.goBack();
+    setOpen(false);
   };
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setName(e.target.value);
+
+    setTimeout(() => {
+      if (e.target.value === '') return setUserList([]);
+
+      db.collection('users').onSnapshot((snapshot) => {
+        const users = snapshot.docs.filter(
+          (doc) => doc.data().displayName.toLowerCase().includes(e.target.value) === true
+        );
+        setUserList(users.map((user) => user.data()));
+      });
+    }, 100);
+  };
+
+  function selectClickedUser(displayName, photoURL) {
+    setSelectedUser(displayName);
+    setSelectedUserPhotoURL(photoURL);
+    setName('');
+    setUserList([]);
+  }
+
+  function clickCloseButton() {
+    setSelectedUser('');
+    setSelectedUserPhotoURL('');
+  }
+
+  function clickNextButton() {
+    db.collection('users').doc(user.displayName).collection('DM').doc(selectedUser).set({
+      userName: selectedUser,
+      photoURL: selectedUserPhotoURL,
+    });
+
+    db.collection('users').doc(selectedUser).collection('DM').doc(user.displayName).set({
+      userName: user.displayName,
+      photoURL: user.userImageURL,
+    });
+
+    history.push(`/direct/t/${selectedUser}`);
+  }
 
   return (
     <div>
@@ -122,13 +211,37 @@ export default function MessageModal() {
             <S.Header>
               <CloseIcon onClick={handleClose} />
               <S.Title id="transition-modal-title">New Message</S.Title>
-              <S.Button>Next</S.Button>
+              <S.Button onClick={clickNextButton} disabled={!selectedUser}>
+                Next
+              </S.Button>
             </S.Header>
             <S.To>
               <S.Title>To:</S.Title>
-              <S.Input value={name} onChange={handleChange} placeholder="Search..." />
+              {selectedUser && (
+                <S.SelectedUserContainer>
+                  <S.SelectedUser>{selectedUser}</S.SelectedUser>
+                  <CloseIcon onClick={clickCloseButton} fontSize="small" />
+                </S.SelectedUserContainer>
+              )}
+              <S.Input
+                disabled={selectedUser}
+                ref={inputRef}
+                value={name}
+                onChange={handleChange}
+                placeholder="Search..."
+              />
             </S.To>
-            <S.UserList>No account found.</S.UserList>
+            <S.UserList>
+              {userList.length === 0 && <S.NoUser>No account found.</S.NoUser>}
+              {userList.map(({ uid, photoURL, displayName }) => (
+                <UserImageAndName
+                  photoURL={photoURL}
+                  displayName={displayName}
+                  onClick={() => selectClickedUser(displayName, photoURL)}
+                  key={uid}
+                />
+              ))}
+            </S.UserList>
           </div>
         </Fade>
       </Modal>

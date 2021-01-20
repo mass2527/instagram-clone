@@ -187,6 +187,7 @@ function ProfileHeader({ numberOfPosts, numberOfFollower, numberOfFollow }) {
             });
 
             setProfileImageLoading(false);
+            window.location.reload();
           });
       }
     );

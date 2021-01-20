@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { S } from '../App';
 import Header from '../components/layout/Header/Header';
-import Message from '../components/layout/Message/Message';
+import MessageHome from '../components/layout/Message/MessageHome';
 import MessageModal from '../components/shared/Modal/MessageModal';
 
 function DM() {
@@ -11,8 +11,9 @@ function DM() {
   return (
     <>
       <Header />
+
       <S.AppBody>
-        <Message />
+        <MessageHome />
       </S.AppBody>
       {state === 'new' && <MessageModal />}
     </>

@@ -4,11 +4,15 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/userSlice';
 import CreateIcon from '@material-ui/icons/Create';
 import RefreshLoader from '../../shared/Loader/RefreshLoader';
-import MessageRow from './MessageRow';
-import { useHistory } from 'react-router-dom';
+import MessageRow from './shared/MessageRow';
+import { useHistory, useParams } from 'react-router-dom';
+import YourMessage from './shared/YourMessage';
+import db from '../../../firebase/firebase';
+import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
+import ChatContainer from './shared/ChatContainer';
 
 const S = {
-  Message: styled.div`
+  MessageHome: styled.div`
     flex: 1;
     max-width: 975px;
     width: 100%;
@@ -58,7 +62,6 @@ const S = {
   `,
 
   CreateNewMessageIcon: styled.div`
-    border: 1px solid lightgray;
     border-radius: 3px;
     display: flex;
     cursor: pointer;
@@ -74,46 +77,41 @@ const S = {
     display: grid;
     place-items: center;
   `,
-
-  YourMessage: styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `,
-
-  Logo: styled.img`
-    width: 96px;
-    height: 96px;
-  `,
-
-  Title: styled.h3`
-    color: #262626;
-    font-size: 22px;
-    font-weight: 400;
-    margin-bottom: 10px;
-  `,
-
-  Description: styled.p`
-    color: #8e8e8e;
-    font-size: 14px;
-  `,
 };
 
-function Message() {
+function MessageHome() {
   const user = useSelector(selectUser);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
+  const [chatUsers, setChatUsers] = useState([]);
+  const { currentChatUserName } = useParams();
 
   useEffect(() => {
     if (!user) return;
 
     setLoading(false);
-  }, [user]);
+
+    db.collection('users')
+      .doc(user.displayName)
+      .collection('DM')
+      .onSnapshot((snapshot) => {
+        console.log('executed');
+        setChatUsers(
+          snapshot.docs.map((doc) => ({
+            ...doc.data(),
+          }))
+        );
+      });
+  }, [user, currentChatUserName]);
 
   return (
     <>
       {loading && <RefreshLoader />}
-      <S.Message>
+
+      <S.MessageHome>
+        {console.log('chatUsers>>>', chatUsers)}
+        {console.log('user>>>', user)}
+
         <S.Box>
           <S.BoxLeft>
             <S.NameAndCreateNewMessageIcon>
@@ -123,21 +121,29 @@ function Message() {
               </S.CreateNewMessageIcon>
             </S.NameAndCreateNewMessageIcon>
 
-            <MessageRow />
-            <MessageRow />
-            <MessageRow />
+            {chatUsers.length === 0 ? (
+              <>
+                <MessageRow />
+                <MessageRow />
+                <MessageRow />
+              </>
+            ) : (
+              chatUsers.map(({ userName, photoURL }) => (
+                <UserImageAndName
+                  key={userName}
+                  displayName={userName}
+                  photoURL={photoURL}
+                  changeChatUser={() => history.push(`/direct/t/${userName}`)}
+                />
+              ))
+            )}
           </S.BoxLeft>
-          <S.BoxRight>
-            <S.YourMessage>
-              <S.Logo src="https://static.thenounproject.com/png/2796195-200.png" alt="DM-logo" />
-              <S.Title>Your messages</S.Title>
-              <S.Description>Send private photos and messages to a friend or group.</S.Description>
-            </S.YourMessage>
-          </S.BoxRight>
+
+          <S.BoxRight>{currentChatUserName ? <ChatContainer chatUsers={chatUsers} /> : <YourMessage />}</S.BoxRight>
         </S.Box>
-      </S.Message>
+      </S.MessageHome>
     </>
   );
 }
 
-export default Message;
+export default MessageHome;

@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import DropdownMenu from './shared/DropdownMenu';
 import db from '../../../firebase/firebase';
 import SearchIcon from '@material-ui/icons/Search';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close';
 import SearchResult from './shared/SearchResult';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/userSlice';
@@ -50,7 +50,7 @@ const S = {
   HomeIconContainer: styled.div`
     > .MuiSvgIcon-root {
       cursor: pointer;
-      font-size: 28px;
+      font-size: 22px;
       margin-right: 10px;
       color: ${({ isHome }) => (isHome ? 'black' : 'lightgray')};
     }
@@ -59,7 +59,7 @@ const S = {
   SendIconContainer: styled.div`
     > .MuiSvgIcon-root {
       cursor: pointer;
-      font-size: 28px;
+      font-size: 22px;
       margin-right: 10px;
       color: ${({ isDM }) => (isDM ? 'black' : 'lightgray')};
     }
@@ -191,7 +191,7 @@ function Header() {
           {searchName !== '' && showResults && (
             <SearchResult clearInput={() => setSearchName('')} userList={userList} />
           )}
-          {searchName !== '' && <CancelIcon onClick={clickCloseIcon} fontSize="small" />}
+          {searchName !== '' && <CloseIcon onClick={clickCloseIcon} fontSize="small" />}
         </S.Form>
 
         <S.Icons>

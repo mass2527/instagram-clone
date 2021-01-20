@@ -209,6 +209,7 @@ function DropdownMenu({ isOpen }, ref) {
             });
             initializeInput();
             handleClose();
+            history.push('/');
           });
       }
     );
