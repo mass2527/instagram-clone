@@ -27,6 +27,7 @@ export default function FollowerDialog({ reset }) {
           }))
         );
       });
+    // eslint-disable-next-line
   }, []);
 
   const handleClose = () => {

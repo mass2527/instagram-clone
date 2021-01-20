@@ -41,7 +41,7 @@ function FeedRight() {
     <S.FeedRight>
       <S.Title>Suggestions For You</S.Title>
       {users.map(({ photoURL, displayName }) => (
-        <FeedRightRow photoURL={photoURL} displayName={displayName} />
+        <FeedRightRow key={displayName} photoURL={photoURL} displayName={displayName} />
       ))}
     </S.FeedRight>
   );

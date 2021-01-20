@@ -24,7 +24,7 @@ const S = {
     }
   `,
 
-  PostHeader: styled.div`
+  Header: styled.div`
     height: 60px;
     padding: 16px;
     box-sizing: border-box;
@@ -40,7 +40,7 @@ const S = {
     }
   `,
 
-  PostUserImage: styled.img`
+  UserImage: styled.img`
     width: 32px;
     height: 32px;
     box-sizing: border-box;
@@ -50,13 +50,13 @@ const S = {
     cursor: pointer;
   `,
 
-  PostHeaderInfo: styled.div`
+  HeaderInfo: styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 10px;
   `,
 
-  PostUserName: styled.span`
+  UserName: styled.span`
     font-size: 14px;
     color: #262626;
     font-weight: 500;
@@ -66,12 +66,14 @@ const S = {
     }
   `,
 
-  PostTitle: styled.span`
+  Title: styled.span`
     font-size: 12px;
     color: #262626;
   `,
 
-  PostImage: styled.img`
+  ImageContainer: styled.div``,
+
+  Image: styled.img`
     width: 614px;
     object-fit: contain;
     display: block;
@@ -81,11 +83,11 @@ const S = {
     }
   `,
 
-  PostBottom: styled.div`
+  Bottom: styled.div`
     flex: 1;
   `,
 
-  PostTimestamp: styled.div`
+  Timestamp: styled.div`
     padding: 0px 16px;
     font-size: 10px;
     color: #8e8e8e;
@@ -103,10 +105,10 @@ const S = {
 function Post({ caption, displayName, imageURL, postId, timestamp, title, userId, userImageURL }) {
   const user = useSelector(selectUser);
   const [comments, setComments] = useState([]);
-  const history = useHistory();
-  const imageRef = useRef(null);
   const [postImageLoading, setPostImageLoading] = useState(true);
   const [postUserInfo, setPostUserInfo] = useState({});
+  const imageRef = useRef(null);
+  const history = useHistory();
 
   useEffect(() => {
     db.collection('posts')
@@ -129,8 +131,10 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
         setPostUserInfo(res.data());
       });
 
-    imageRef?.current?.addEventListener('load', handleLoad);
-    return () => imageRef?.current?.addEventListener('load', handleLoad);
+    const image = imageRef.current;
+
+    image.addEventListener('load', handleLoad);
+    return () => image.addEventListener('load', handleLoad);
     // eslint-disable-next-line
   }, []);
 
@@ -157,8 +161,8 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
 
   return (
     <S.Post>
-      <S.PostHeader>
-        <S.PostUserImage
+      <S.Header>
+        <S.UserImage
           onClick={viewProfile}
           src={
             postUserInfo?.photoURL
@@ -168,16 +172,18 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
           alt="post-owner-profile-image"
         />
 
-        <S.PostHeaderInfo>
-          <S.PostUserName onClick={viewProfile}>{displayName}</S.PostUserName>
-          <S.PostTitle>{title}</S.PostTitle>
-        </S.PostHeaderInfo>
-      </S.PostHeader>
+        <S.HeaderInfo>
+          <S.UserName onClick={viewProfile}>{displayName}</S.UserName>
+          <S.Title>{title}</S.Title>
+        </S.HeaderInfo>
+      </S.Header>
 
       {postImageLoading && <PostImageLoader />}
-      <S.PostImage ref={imageRef} src={imageURL} alt={title} />
+      <S.ImageContainer>
+        <S.Image ref={imageRef} src={imageURL} alt={title} />
+      </S.ImageContainer>
 
-      <S.PostBottom>
+      <S.Bottom>
         <PostIcons
           postId={postId}
           caption={caption}
@@ -197,8 +203,8 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
           <Comment key={comment.commentId} name={comment.displayName} content={comment.comment} />
         ))}
 
-        <S.PostTimestamp>{moment(timestamp).fromNow().toUpperCase()}</S.PostTimestamp>
-      </S.PostBottom>
+        <S.Timestamp>{moment(timestamp).fromNow().toUpperCase()}</S.Timestamp>
+      </S.Bottom>
       <CommentSender postId={postId} user={user} />
     </S.Post>
   );

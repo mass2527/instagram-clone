@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, forwardRef } from 'react';
 import styled from 'styled-components';
 import FaceIcon from '@material-ui/icons/Face';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -124,9 +124,8 @@ const S = {
   `,
 };
 
-function DropdownMenu({ isOpen }) {
+function DropdownMenu({ isOpen }, ref) {
   const history = useHistory();
-  const menuRef = useRef(null);
   const user = useSelector(selectUser);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -216,7 +215,7 @@ function DropdownMenu({ isOpen }) {
   }
 
   return (
-    <S.DropdownMenu ref={menuRef} isOpen={isOpen}>
+    <S.DropdownMenu ref={ref} isOpen={isOpen}>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
@@ -301,4 +300,4 @@ function DropdownMenu({ isOpen }) {
   );
 }
 
-export default DropdownMenu;
+export default forwardRef(DropdownMenu);

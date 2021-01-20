@@ -27,6 +27,7 @@ export default function FollowingModal({ reset }) {
           }))
         );
       });
+    // eslint-disable-next-line
   }, []);
 
   const handleClose = () => {

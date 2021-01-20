@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import db from '../../../firebase/firebase';
 import RefreshLoader from '../../shared/Loader/RefreshLoader';
 import ProfilePosts from './shared/ProfilePosts';

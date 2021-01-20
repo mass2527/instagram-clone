@@ -5,6 +5,7 @@ import { selectUser } from '../../../features/userSlice';
 import CreateIcon from '@material-ui/icons/Create';
 import RefreshLoader from '../../shared/Loader/RefreshLoader';
 import MessageRow from './MessageRow';
+import { useHistory } from 'react-router-dom';
 
 const S = {
   Message: styled.div`
@@ -83,7 +84,6 @@ const S = {
   Logo: styled.img`
     width: 96px;
     height: 96px;
-    margin-bottom: 20px;
   `,
 
   Title: styled.h3`
@@ -102,6 +102,7 @@ const S = {
 function Message() {
   const user = useSelector(selectUser);
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     if (!user) return;
@@ -118,7 +119,7 @@ function Message() {
             <S.NameAndCreateNewMessageIcon>
               <S.Name>{user?.displayName}</S.Name>
               <S.CreateNewMessageIcon>
-                <CreateIcon />
+                <CreateIcon onClick={() => history.push('/direct/new/')} />
               </S.CreateNewMessageIcon>
             </S.NameAndCreateNewMessageIcon>
 
@@ -128,7 +129,7 @@ function Message() {
           </S.BoxLeft>
           <S.BoxRight>
             <S.YourMessage>
-              <S.Logo src="https://cdn.onlinewebfonts.com/svg/img_550763.png" alt="DM-logo" />
+              <S.Logo src="https://static.thenounproject.com/png/2796195-200.png" alt="DM-logo" />
               <S.Title>Your messages</S.Title>
               <S.Description>Send private photos and messages to a friend or group.</S.Description>
             </S.YourMessage>

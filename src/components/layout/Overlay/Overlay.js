@@ -244,6 +244,7 @@ function Overlay() {
       window.removeEventListener('keydown', pressESC);
       window.removeEventListener('resize', handleResize);
     };
+    // eslint-disable-next-line
   }, []);
 
   function viewProfile() {

@@ -2,16 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import DropdownMenu from './shared/DropdownMenu';
-import db, { auth } from '../../../firebase/firebase';
+import db from '../../../firebase/firebase';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import SearchResult from './shared/SearchResult';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/userSlice';
 import HomeIcon from '@material-ui/icons/Home';
-import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SendIcon from '@material-ui/icons/Send';
-import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
+import { auth } from '../../../firebase/firebase';
 
 const S = {
   Header: styled.div`
@@ -93,11 +92,19 @@ const S = {
     }
 
     @media (max-width: 500px) {
-      width: 100px;
+      width: 150px;
 
       > .MuiSvgIcon-root {
         display: none;
       }
+    }
+
+    @media (max-width: 450px) {
+      width: 125px;
+    }
+
+    @media (max-width: 400px) {
+      width: 100px;
     }
   `,
 
@@ -156,10 +163,6 @@ function Header() {
     });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
-
   function clickSearchIcon() {
     inputRef.current.focus();
   }
@@ -182,7 +185,7 @@ function Header() {
           alt="instagram"
         />
 
-        <S.Form onClick={clickForm} isTyped={searchName !== ''} onSubmit={handleSubmit}>
+        <S.Form onClick={clickForm} isTyped={searchName !== ''}>
           {searchName === '' && <SearchIcon onClick={clickSearchIcon} fontSize="small" />}
           <S.Input ref={inputRef} value={searchName} onChange={handleChange} type="text" placeholder="Search" />
           {searchName !== '' && showResults && (
@@ -196,7 +199,14 @@ function Header() {
             <HomeIcon onClick={() => history.push('/')} />
           </S.HomeIconContainer>
           <S.SendIconContainer isDM={location.pathname.includes('direct')}>
-            <SendIcon onClick={() => history.push('/direct/inbox')} />
+            <SendIcon
+              onClick={() => {
+                if (!auth.currentUser) {
+                  return history.push('/login');
+                }
+                history.push('/direct/inbox/');
+              }}
+            />
           </S.SendIconContainer>
 
           <S.ProfileImage

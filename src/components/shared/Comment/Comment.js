@@ -90,6 +90,7 @@ function Comment({ userImageOption, caption, name, content, timestamp, timestamp
       .then((res) => {
         setCommentUserInfo(res.data());
       });
+    // eslint-disable-next-line
   }, []);
 
   function viewProfile() {

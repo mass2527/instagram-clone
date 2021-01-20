@@ -83,6 +83,7 @@ function Feed() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+    // eslint-disable-next-line
   }, [posts]);
 
   return (

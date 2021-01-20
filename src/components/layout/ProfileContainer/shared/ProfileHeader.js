@@ -200,7 +200,7 @@ function ProfileHeader({ numberOfPosts, numberOfFollower, numberOfFollow }) {
             <S.Image
               isLoading={profileImageLoading}
               onClick={() => {
-                if (user.displayName !== location.state.userName) return;
+                if (!auth.currentUser || user.displayName !== location.state.userName) return;
                 inputRef.current.click();
               }}
               src={

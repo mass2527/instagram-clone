@@ -93,6 +93,7 @@ function LoginForm() {
         }))
       );
     });
+    // eslint-disable-next-line
   }, []);
 
   function startProcess(processName) {

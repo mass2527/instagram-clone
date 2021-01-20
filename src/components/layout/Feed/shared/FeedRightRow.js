@@ -60,11 +60,12 @@ function FeedRightRow({ photoURL, displayName, closeModal }) {
 
   useEffect(() => {
     db.collection('users')
-      .doc(auth.currentUser.displayName)
+      .doc(auth.currentUser?.displayName)
       .collection('follow')
       .onSnapshot((snapshot) => {
         setIsFollowing(snapshot.docs.some((doc) => doc.data().displayName === displayName));
       });
+    // eslint-disable-next-line
   }, []);
 
   function viewUserProfile() {
@@ -107,7 +108,7 @@ function FeedRightRow({ photoURL, displayName, closeModal }) {
         <S.Name onClick={viewUserProfile}>{displayName}</S.Name>
       </S.ImageAndName>
 
-      {auth.currentUser.displayName !== displayName && (
+      {auth.currentUser && auth.currentUser?.displayName !== displayName && (
         <S.Button onClick={clickFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</S.Button>
       )}
     </S.FeedRightRow>
