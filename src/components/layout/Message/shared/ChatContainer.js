@@ -132,20 +132,12 @@ function ChatContainer({ chatUsers }) {
   const [text, setText] = useState('');
   const [messages, setMessages] = useState([]);
   const messagesRef = useRef(null);
-  const page = useRef(1);
-
-  useEffect(() => {
-    page.current = 1;
-    const messagesRefCurrent = messagesRef.current;
-    messagesRefCurrent.addEventListener('scroll', handleScroll);
-
-    return () => messagesRefCurrent.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     setChatUser(chatUsers.find((user) => user.userName === currentChatUserName));
 
     if (!chatUser) history.replace('/direct/inbox');
+    console.log('useeffect 동작');
 
     db.collection('users')
       .doc(user?.displayName)
@@ -153,7 +145,7 @@ function ChatContainer({ chatUsers }) {
       .doc(currentChatUserName)
       .collection('messages')
       .orderBy('timestamp', 'desc')
-      .limit(15)
+
       .onSnapshot((snapshot) => {
         setMessages(
           snapshot.docs.reverse().map((doc) => ({
@@ -164,7 +156,7 @@ function ChatContainer({ chatUsers }) {
       });
 
     // eslint-disable-next-line
-  }, [chatUser]);
+  }, [chatUser, currentChatUserName]);
 
   useEffect(() => {
     messagesRef.current.lastElementChild?.scrollIntoView();
@@ -190,33 +182,9 @@ function ChatContainer({ chatUsers }) {
     setText('');
   }
 
-  function handleScroll() {
-    if (messagesRef.current.scrollTop !== 0) return;
-
-    console.log('동작');
-
-    db.collection('users')
-      .doc(user.displayName)
-      .collection('DM')
-      .doc(currentChatUserName)
-      .collection('messages')
-      .orderBy('timestamp', 'desc')
-      .startAfter(15)
-      .onSnapshot((snapshot) => {
-        setMessages(
-          snapshot.docs.reverse().map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-        );
-      });
-
-    page.current++;
-  }
-
   return (
     <S.ChatConatiner>
-      {console.log(messages)}
+      {/* {console.log(messages)} */}
       {/* {console.log('messages>>>', messages)} */}
       {/* {console.log('chatUser>>>', chatUser)} */}
       <S.Header>
@@ -237,7 +205,12 @@ function ChatContainer({ chatUsers }) {
           <S.MessageRow key={id} isMyMessage={userName === user.displayName}>
             {userName !== user.displayName && messages[index].userName !== messages[index + 1]?.userName ? (
               <S.ImageDiv>
-                <S.Image src={photoURL} alt={userName} />
+                <S.Image
+                  src={
+                    photoURL ? photoURL : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+                  }
+                  alt={userName}
+                />
               </S.ImageDiv>
             ) : (
               <S.ImageDiv></S.ImageDiv>

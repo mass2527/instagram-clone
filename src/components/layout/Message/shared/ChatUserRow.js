@@ -102,14 +102,20 @@ function ChatUserRow({ photoURL, userName, changeChatUser }) {
       {console.log('lastMessage>>>', lastMessage)}
       {/* {console.log('user>>>', user)} */}
       <S.RowLeft>
-        <S.Circle>{photoURL && <S.Image src={photoURL} />}</S.Circle>
+        <S.Circle>
+          {userName && (
+            <S.Image
+              src={photoURL ? photoURL : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'}
+            />
+          )}
+        </S.Circle>
       </S.RowLeft>
       <S.RowRight>
         <S.RowBar hasUser={userName} width={116}>
           {userName && <S.UserName>{userName}</S.UserName>}
         </S.RowBar>
         <S.RowBar hasUser={userName} width={250}>
-          {lastMessage && <S.LastMessage>{lastMessage.message}</S.LastMessage>}
+          {lastMessage && <S.LastMessage>{lastMessage.message}&nbsp;</S.LastMessage>}
           {lastMessage && Object.keys(lastMessage).length !== 0 && (
             <S.Timestamp>· {moment(new Date(lastMessage.timestamp?.toDate()).toUTCString()).fromNow()}</S.Timestamp>
           )}
