@@ -20,7 +20,7 @@ const S = {
   `,
 
   FeedLeft: styled.div`
-    max-width: 614px;
+    max-width: 600px;
     width: 100%;
     margin-right: 28px;
     display: flex;

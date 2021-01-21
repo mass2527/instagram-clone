@@ -71,7 +71,7 @@ const S = {
     height: 100%;
     cursor: pointer;
     border-radius: 100%;
-    object-fit: contain;
+    object-fit: cover;
     opacity: ${(props) => props.isLoading && 0.5};
   `,
 
@@ -205,9 +205,9 @@ function ProfileHeader({ numberOfPosts, numberOfFollower, numberOfFollow }) {
                 inputRef.current.click();
               }}
               src={
-                !currentProfileUserInfo.photoURL
+                !currentProfileUserInfo?.photoURL
                   ? 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
-                  : currentProfileUserInfo.photoURL
+                  : currentProfileUserInfo?.photoURL
               }
               alt="user-profile"
             />

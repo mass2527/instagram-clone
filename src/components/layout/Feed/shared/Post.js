@@ -44,7 +44,7 @@ const S = {
     width: 32px;
     height: 32px;
     box-sizing: border-box;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 100%;
 
     cursor: pointer;
@@ -74,7 +74,7 @@ const S = {
   ImageContainer: styled.div``,
 
   Image: styled.img`
-    width: 614px;
+    width: 600px;
     object-fit: contain;
     display: block;
 

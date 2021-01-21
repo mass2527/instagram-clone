@@ -135,6 +135,7 @@ function LoginForm() {
       });
 
       history.replace('/');
+      window.location.reload();
     } catch (error) {
       handleError(error);
     }
