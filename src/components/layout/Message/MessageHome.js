@@ -4,11 +4,10 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../features/userSlice';
 import CreateIcon from '@material-ui/icons/Create';
 import RefreshLoader from '../../shared/Loader/RefreshLoader';
-import MessageRow from './shared/MessageRow';
+import ChatUserRow from './shared/ChatUserRow';
 import { useHistory, useParams } from 'react-router-dom';
 import YourMessage from './shared/YourMessage';
 import db from '../../../firebase/firebase';
-import UserImageAndName from '../../shared/UserImageAndName/UserImageAndName';
 import ChatContainer from './shared/ChatContainer';
 
 const S = {
@@ -95,7 +94,6 @@ function MessageHome() {
       .doc(user.displayName)
       .collection('DM')
       .onSnapshot((snapshot) => {
-        console.log('executed');
         setChatUsers(
           snapshot.docs.map((doc) => ({
             ...doc.data(),
@@ -109,8 +107,8 @@ function MessageHome() {
       {loading && <RefreshLoader />}
 
       <S.MessageHome>
-        {console.log('chatUsers>>>', chatUsers)}
-        {console.log('user>>>', user)}
+        {/* {console.log('chatUsers>>>', chatUsers)}
+        {console.log('user>>>', user)} */}
 
         <S.Box>
           <S.BoxLeft>
@@ -123,16 +121,16 @@ function MessageHome() {
 
             {chatUsers.length === 0 ? (
               <>
-                <MessageRow />
-                <MessageRow />
-                <MessageRow />
+                <ChatUserRow />
+                <ChatUserRow />
+                <ChatUserRow />
               </>
             ) : (
               chatUsers.map(({ userName, photoURL }) => (
-                <UserImageAndName
+                <ChatUserRow
                   key={userName}
-                  displayName={userName}
                   photoURL={photoURL}
+                  userName={userName}
                   changeChatUser={() => history.push(`/direct/t/${userName}`)}
                 />
               ))

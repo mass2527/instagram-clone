@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ const S = {
   ChatConatiner: styled.div`
     width: 100%;
     height: 100%;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
   `,
@@ -29,11 +30,60 @@ const S = {
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding: 20px 20px 0px 20px;
+    overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: rgb(240, 240, 240);
+    }
   `,
 
-  Message: styled.div`
+  MessageRow: styled.div`
+    display: flex;
+    justify-content: ${({ isMyMessage }) => (isMyMessage ? 'flex-end' : 'flex-start')};
+    margin-bottom: 10px;
+  `,
+
+  ImageDiv: styled.div`
+    width: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-right: 10px;
+    padding-bottom: 7px;
+  `,
+
+  Image: styled.img`
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+  `,
+
+  MessageDiv: styled.div`
+    background-color: ${({ isMyMessage }) => isMyMessage && '#efefef'};
     padding: 16px;
-    background-color: #efefef;
+    border-radius: 30px;
+    display: flex;
+    border: ${({ isMyMessage }) => !isMyMessage && '1px solid lightgray'};
+    max-width: 50%;
+  `,
+
+  MessageSpan: styled.span`
+    color: #262626;
+    font-size: 14px;
+    line-height: 18px;
   `,
 
   Footer: styled.footer`
@@ -81,6 +131,16 @@ function ChatContainer({ chatUsers }) {
   const history = useHistory();
   const [text, setText] = useState('');
   const [messages, setMessages] = useState([]);
+  const messagesRef = useRef(null);
+  const page = useRef(1);
+
+  useEffect(() => {
+    page.current = 1;
+    const messagesRefCurrent = messagesRef.current;
+    messagesRefCurrent.addEventListener('scroll', handleScroll);
+
+    return () => messagesRefCurrent.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     setChatUser(chatUsers.find((user) => user.userName === currentChatUserName));
@@ -90,18 +150,25 @@ function ChatContainer({ chatUsers }) {
     db.collection('users')
       .doc(user?.displayName)
       .collection('DM')
-      .doc(chatUser?.userName)
+      .doc(currentChatUserName)
       .collection('messages')
+      .orderBy('timestamp', 'desc')
+      .limit(15)
       .onSnapshot((snapshot) => {
         setMessages(
-          snapshot.docs.map((doc) => ({
+          snapshot.docs.reverse().map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }))
         );
       });
+
     // eslint-disable-next-line
   }, [chatUser]);
+
+  useEffect(() => {
+    messagesRef.current.lastElementChild?.scrollIntoView();
+  }, [messagesRef.current?.lastElementChild]);
 
   function sendMessage(e) {
     e.preventDefault();
@@ -123,10 +190,35 @@ function ChatContainer({ chatUsers }) {
     setText('');
   }
 
+  function handleScroll() {
+    if (messagesRef.current.scrollTop !== 0) return;
+
+    console.log('동작');
+
+    db.collection('users')
+      .doc(user.displayName)
+      .collection('DM')
+      .doc(currentChatUserName)
+      .collection('messages')
+      .orderBy('timestamp', 'desc')
+      .startAfter(15)
+      .onSnapshot((snapshot) => {
+        setMessages(
+          snapshot.docs.reverse().map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      });
+
+    page.current++;
+  }
+
   return (
     <S.ChatConatiner>
-      {console.log('messages>>>', messages)}
-      {console.log('chatUser>>>', chatUser)}
+      {console.log(messages)}
+      {/* {console.log('messages>>>', messages)} */}
+      {/* {console.log('chatUser>>>', chatUser)} */}
       <S.Header>
         <UserImageAndName
           photoURL={chatUser?.photoURL}
@@ -136,10 +228,25 @@ function ChatContainer({ chatUsers }) {
           noHoverOption={true}
         />
       </S.Header>
-      {console.log('user>>>', user)}
-      <S.Messages>
-        {messages.map((message) => (
-          <S.Message>{message.message}</S.Message>
+
+      {/* {console.log('user>>>', user)} */}
+      {/* {console.log('chatUser>>>', chatUser)} */}
+      {/* {console.log('messages>>>', messages)} */}
+      <S.Messages ref={messagesRef}>
+        {messages.map(({ id, message, userName, photoURL }, index) => (
+          <S.MessageRow key={id} isMyMessage={userName === user.displayName}>
+            {userName !== user.displayName && messages[index].userName !== messages[index + 1]?.userName ? (
+              <S.ImageDiv>
+                <S.Image src={photoURL} alt={userName} />
+              </S.ImageDiv>
+            ) : (
+              <S.ImageDiv></S.ImageDiv>
+            )}
+
+            <S.MessageDiv isMyMessage={userName === user.displayName}>
+              <S.MessageSpan>{message}</S.MessageSpan>
+            </S.MessageDiv>
+          </S.MessageRow>
         ))}
       </S.Messages>
       <S.Footer>

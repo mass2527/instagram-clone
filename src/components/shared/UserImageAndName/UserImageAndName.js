@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const S = {
   UserImageAndName: styled.div`
-    height: 60px;
     padding: 8px 16px;
     box-sizing: border-box;
     display: flex;
