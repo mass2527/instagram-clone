@@ -67,12 +67,18 @@ const S = {
   `,
 
   Image: styled.img`
-    width: 100%;
-    height: 100%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
     cursor: pointer;
-    border-radius: 100%;
     object-fit: cover;
+    object-position: center center;
     opacity: ${(props) => props.isLoading && 0.5};
+
+    @media (max-width: 735px) {
+      width: 77px;
+      height: 77px;
+    }
   `,
 
   ImageLoader: styled.img`

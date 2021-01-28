@@ -19,8 +19,14 @@ const S = {
     flex-direction: column;
     border-radius: 3px;
     background-color: white;
+
     @media (max-width: 600px) {
       border: none;
+      margin-bottom: 0px;
+
+      :last-child {
+        margin-bottom: 60px;
+      }
     }
   `,
 
@@ -109,6 +115,7 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
   const [postUserInfo, setPostUserInfo] = useState({});
   const imageRef = useRef(null);
   const history = useHistory();
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     db.collection('posts')
@@ -133,13 +140,21 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
 
     const image = imageRef.current;
 
+    window.addEventListener('resize', handleResize);
     image.addEventListener('load', handleLoad);
-    return () => image.addEventListener('load', handleLoad);
+    return () => {
+      image.addEventListener('load', handleLoad);
+      window.removeEventListener('resize', handleResize);
+    };
     // eslint-disable-next-line
   }, []);
 
   function handleLoad() {
     setPostImageLoading(false);
+  }
+
+  function handleResize() {
+    setWidth(window.innerWidth);
   }
 
   function clickViewAll() {
@@ -205,7 +220,7 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
 
         <S.Timestamp>{moment(timestamp).fromNow().toUpperCase()}</S.Timestamp>
       </S.Bottom>
-      <CommentSender postId={postId} user={user} />
+      {width >= 600 && <CommentSender postId={postId} user={user} />}
     </S.Post>
   );
 }

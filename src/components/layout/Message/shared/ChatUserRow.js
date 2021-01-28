@@ -72,11 +72,17 @@ const S = {
   `,
 };
 
-function ChatUserRow({ photoURL, userName, changeChatUser }) {
+function ChatUserRow({ userName, changeChatUser }) {
   const user = useSelector(selectUser);
   const [lastMessage, setLastMessage] = useState({});
+  const [photoURL, setPhotoURL] = useState('');
 
   useEffect(() => {
+    db.collection('users')
+      .doc(userName)
+      .get()
+      .then((res) => setPhotoURL(res.data()?.photoURL));
+
     db.collection('users')
       .doc(user?.displayName)
       .collection('DM')
@@ -87,6 +93,7 @@ function ChatUserRow({ photoURL, userName, changeChatUser }) {
       .onSnapshot((snapshot) => {
         setLastMessage(...snapshot.docs.map((doc) => ({ ...doc.data() })));
       });
+    // eslint-disable-next-line
   }, [user]);
 
   return (
@@ -98,8 +105,8 @@ function ChatUserRow({ photoURL, userName, changeChatUser }) {
         changeChatUser();
       }}
     >
-      {console.log(userName)}
-      {console.log('lastMessage>>>', lastMessage)}
+      {/* {console.log(userName)}
+      {console.log('lastMessage>>>', lastMessage)} */}
       {/* {console.log('user>>>', user)} */}
       <S.RowLeft>
         <S.Circle>

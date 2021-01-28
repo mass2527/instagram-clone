@@ -14,6 +14,11 @@ const S = {
     max-height: 90vh;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 600px) {
+      max-height: none;
+      height: calc(100vh - 44px);
+    }
   `,
 
   Header: styled.header`
@@ -132,12 +137,17 @@ function ChatContainer({ chatUsers }) {
   const [text, setText] = useState('');
   const [messages, setMessages] = useState([]);
   const messagesRef = useRef(null);
+  const [photoURL, setPhotoURL] = useState('');
 
   useEffect(() => {
     setChatUser(chatUsers.find((user) => user.userName === currentChatUserName));
 
     if (!chatUser) history.replace('/direct/inbox');
-    console.log('useeffect 동작');
+
+    db.collection('users')
+      .doc(chatUser?.userName)
+      .get()
+      .then((res) => setPhotoURL(res.data()?.photoURL));
 
     db.collection('users')
       .doc(user?.displayName)
@@ -168,14 +178,12 @@ function ChatContainer({ chatUsers }) {
     db.collection('users').doc(user.displayName).collection('DM').doc(chatUser.userName).collection('messages').add({
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       userName: user.displayName,
-      photoURL: user.userImageURL,
       message: text,
     });
 
     db.collection('users').doc(chatUser.userName).collection('DM').doc(user.displayName).collection('messages').add({
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       userName: user.displayName,
-      photoURL: user.userImageURL,
       message: text,
     });
 
@@ -189,7 +197,7 @@ function ChatContainer({ chatUsers }) {
       {/* {console.log('chatUser>>>', chatUser)} */}
       <S.Header>
         <UserImageAndName
-          photoURL={chatUser?.photoURL}
+          photoURL={photoURL}
           displayName={chatUser?.userName}
           small={true}
           bold={true}
@@ -201,7 +209,7 @@ function ChatContainer({ chatUsers }) {
       {/* {console.log('chatUser>>>', chatUser)} */}
       {/* {console.log('messages>>>', messages)} */}
       <S.Messages ref={messagesRef}>
-        {messages.map(({ id, message, userName, photoURL }, index) => (
+        {messages.map(({ id, message, userName }, index) => (
           <S.MessageRow key={id} isMyMessage={userName === user.displayName}>
             {userName !== user.displayName && messages[index].userName !== messages[index + 1]?.userName ? (
               <S.ImageDiv>

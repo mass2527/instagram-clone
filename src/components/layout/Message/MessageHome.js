@@ -23,6 +23,8 @@ const S = {
     @media (max-width: 935px) {
       justify-content: center;
       padding: 0px;
+      min-height: calc(100vh - 54px);
+      height: auto;
     }
   `,
 
@@ -31,6 +33,10 @@ const S = {
     background-color: white;
     width: 100%;
     display: flex;
+
+    @media (max-width: 935px) {
+      flex-direction: column;
+    }
   `,
 
   BoxLeft: styled.div`
@@ -40,7 +46,8 @@ const S = {
     border-right: 1px solid lightgray;
 
     @media (max-width: 935px) {
-      width: 299px;
+      width: 100%;
+      border-bottom: 1px solid lightgray;
     }
   `,
 
@@ -105,7 +112,7 @@ function MessageHome() {
   return (
     <>
       {loading && <RefreshLoader />}
-
+      {console.log('chatUsers>>>', chatUsers)}
       <S.MessageHome>
         {/* {console.log('chatUsers>>>', chatUsers)}
         {console.log('user>>>', user)} */}
@@ -126,10 +133,9 @@ function MessageHome() {
                 <ChatUserRow />
               </>
             ) : (
-              chatUsers.map(({ userName, photoURL }) => (
+              chatUsers.map(({ userName }) => (
                 <ChatUserRow
                   key={userName}
-                  photoURL={photoURL}
                   userName={userName}
                   changeChatUser={() => history.push(`/direct/t/${userName}`)}
                 />

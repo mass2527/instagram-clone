@@ -18,11 +18,18 @@ const S = {
     border-bottom: 1px solid #dbdbdb;
     display: grid;
     place-items: center;
+
     box-sizing: border-box;
     background-color: white;
     position: sticky;
     top: 0;
     z-index: 1;
+
+    @media (max-width: 400px) {
+      height: 44px;
+      display: flex;
+      align-items: center;
+    }
   `,
 
   Center: styled.div`

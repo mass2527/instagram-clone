@@ -65,12 +65,14 @@ const S = {
   PostRight: styled.div`
     width: 335px;
     background-color: white;
-
     display: flex;
     flex-direction: column;
 
     @media (max-width: 500px) {
       width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
     }
   `,
 
