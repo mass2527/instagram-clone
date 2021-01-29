@@ -12,9 +12,9 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 ### **`Preview`**
 
 >Main page
-<br/>
+
 ![Instagram clone main home](./src/readme/main.png)
 
 >Post page
-<br/>
+
 ![Instagram posts](./src/readme/instagramPosts.png)
