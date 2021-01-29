@@ -17,4 +17,5 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 >Post page
 
-![Instagram posts](./src/readme/instagramPosts.png)
+<p align="center"><img src="./src/readme/instagramPosts.png"></p>
+
