@@ -94,9 +94,9 @@ const S = {
     > .MuiSvgIcon-root {
       width: 32px;
       height: 32px;
-      padding: 2px;
-      border: 2px solid #d32c83;
-      border-radius: 100%;
+      border: 1px solid lightgray;
+      box-sizing: border-box;
+      border-radius: 50%;
       cursor: pointer;
     }
   `,
@@ -104,9 +104,9 @@ const S = {
   UserImage: styled.img`
     width: 32px;
     height: 32px;
-    padding: 2px;
-    border: 2px solid #d32c83;
-    border-radius: 100%;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    border-radius: 50%;
     cursor: pointer;
   `,
 

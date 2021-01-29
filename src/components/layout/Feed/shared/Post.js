@@ -9,6 +9,8 @@ import { useHistory } from 'react-router-dom';
 import CommentSender from '../../../shared/Comment/CommentSender';
 import PostImageLoader from '../../../shared/Loader/PostImageLoader';
 import PostIcons from '../../../shared/PostIcons/PostIcons';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import PostOptionDialog from '../../../shared/Dialog/PostOptionDialog';
 
 const S = {
   Post: styled.div`
@@ -19,6 +21,10 @@ const S = {
     flex-direction: column;
     border-radius: 3px;
     background-color: white;
+
+    :first-child {
+      border-top: none;
+    }
 
     @media (max-width: 600px) {
       border: none;
@@ -34,21 +40,24 @@ const S = {
     height: 60px;
     padding: 16px;
     box-sizing: border-box;
-
+    justify-content: space-between;
     display: flex;
     align-items: center;
 
     > .MuiSvgIcon-root {
-      border: 1px solid red;
-      border-radius: 100%;
-      padding: 2px;
       cursor: pointer;
     }
+  `,
+
+  UserImageAndInfo: styled.div`
+    display: flex;
+    align-items: center;
   `,
 
   UserImage: styled.img`
     width: 32px;
     height: 32px;
+    border: 1px solid lightgray;
     box-sizing: border-box;
     object-fit: cover;
     border-radius: 100%;
@@ -56,7 +65,7 @@ const S = {
     cursor: pointer;
   `,
 
-  HeaderInfo: styled.div`
+  Info: styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 10px;
@@ -116,6 +125,7 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
   const imageRef = useRef(null);
   const history = useHistory();
   const [width, setWidth] = useState(window.innerWidth);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     db.collection('posts')
@@ -177,21 +187,25 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
   return (
     <S.Post>
       <S.Header>
-        <S.UserImage
-          onClick={viewProfile}
-          src={
-            postUserInfo?.photoURL
-              ? postUserInfo?.photoURL
-              : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
-          }
-          alt="post-owner-profile-image"
-        />
+        <S.UserImageAndInfo>
+          <S.UserImage
+            onClick={viewProfile}
+            src={
+              postUserInfo?.photoURL
+                ? postUserInfo?.photoURL
+                : 'https://www.voakorea.com/themes/custom/voa/images/Author__Placeholder.png'
+            }
+            alt="post-owner-profile-image"
+          />
 
-        <S.HeaderInfo>
-          <S.UserName onClick={viewProfile}>{displayName}</S.UserName>
-          <S.Title>{title}</S.Title>
-        </S.HeaderInfo>
+          <S.Info>
+            <S.UserName onClick={viewProfile}>{displayName}</S.UserName>
+            <S.Title>{title}</S.Title>
+          </S.Info>
+        </S.UserImageAndInfo>
+        {displayName === user.displayName && <MoreHorizIcon onClick={() => setOpenDialog(true)} />}
       </S.Header>
+      {openDialog && <PostOptionDialog reset={() => setOpenDialog(false)} postId={postId} />}
 
       {postImageLoading && <PostImageLoader />}
       <S.ImageContainer>

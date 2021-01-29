@@ -12,9 +12,9 @@ const S = {
 function ProfilePosts({ posts }) {
   return (
     <S.ProfilePosts>
-      {posts.map(({ id, imageURL, title, displayName }) => (
-        <SquarePost key={id} postId={id} imageURL={imageURL} title={title} displayName={displayName} />
-      ))}
+      {posts.map(({ id, imageURL, title, displayName }) => {
+        return <SquarePost key={id} postId={id} imageURL={imageURL} title={title} displayName={displayName} />;
+      })}
     </S.ProfilePosts>
   );
 }

@@ -11,10 +11,14 @@ const S = {
     padding: 8px 16px;
     box-sizing: border-box;
     display: flex;
-
+    align-items: center;
     :hover {
       background-color: ${({ hasUser }) => hasUser && 'rgba(0, 0, 0, 0.03)'};
       cursor: ${({ hasUser }) => hasUser && 'pointer'};
+    }
+
+    @media (max-width: 400px) {
+      height: 55px;
     }
   `,
 
@@ -23,18 +27,27 @@ const S = {
   `,
 
   Circle: styled.div`
-    width: 100%;
-    height: 100%;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     background-color: #efefef;
-    box-sizing: border-box;
     border: 1px solid lightgray;
+
+    @media (max-width: 400px) {
+      width: 40px;
+      height: 40px;
+    }
   `,
 
   Image: styled.img`
-    width: 100%;
-    height: 100%;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
+
+    @media (max-width: 400px) {
+      width: 40px;
+      height: 40px;
+    }
   `,
 
   RowRight: styled.div`

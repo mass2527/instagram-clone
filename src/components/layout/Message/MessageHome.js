@@ -36,6 +36,7 @@ const S = {
 
     @media (max-width: 935px) {
       flex-direction: column;
+      border: none;
     }
   `,
 
@@ -44,10 +45,21 @@ const S = {
     flex-direction: column;
     width: 349px;
     border-right: 1px solid lightgray;
+    overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     @media (max-width: 935px) {
       width: 100%;
+      border-right: none;
       border-bottom: 1px solid lightgray;
+      max-height: 101px;
+    }
+
+    @media (max-width: 400px) {
+      max-height: 84px;
     }
   `,
 
@@ -59,6 +71,10 @@ const S = {
     padding: 0px 20px;
     border-bottom: 1px solid lightgray;
     box-sizing: border-box;
+
+    position: sticky;
+    top: 0;
+    background-color: white;
   `,
 
   Name: styled.span`

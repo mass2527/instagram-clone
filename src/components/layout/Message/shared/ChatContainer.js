@@ -15,8 +15,12 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    @media (max-width: 600px) {
+    @media (max-width: 935px) {
       max-height: none;
+      height: calc(100vh - 54px);
+    }
+
+    @media (max-width: 400px) {
       height: calc(100vh - 44px);
     }
   `,
@@ -29,6 +33,10 @@ const S = {
     padding: 0px 20px;
     border-bottom: 1px solid lightgray;
     box-sizing: border-box;
+
+    @media (max-width: 400px) {
+      padding: 0px 5px;
+    }
   `,
 
   Messages: styled.div`

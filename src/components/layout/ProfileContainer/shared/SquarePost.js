@@ -32,9 +32,6 @@ const S = {
     width: 100%;
     height: 100%;
     display: block;
-
-    :hover {
-    }
   `,
 
   Loader: styled.div`
@@ -88,23 +85,6 @@ function SquarePost({ postId, imageURL, title, displayName }) {
   const location = useLocation();
   const [postUserInfo, setPostUserInfo] = useState({});
 
-  function clickPost() {
-    history.push(`/p/${postId}/`, {
-      userName,
-      option: location.state.option,
-      photoURL: postUserInfo?.photoURL,
-      displayName: postUserInfo?.displayName,
-    });
-  }
-
-  function handleResize() {
-    setImageWidth(divRef?.current?.clientWidth);
-  }
-
-  function handleLoad() {
-    setLoading(false);
-  }
-
   useEffect(() => {
     setLoading(true);
     setImageWidth(divRef.current.clientWidth);
@@ -129,6 +109,23 @@ function SquarePost({ postId, imageURL, title, displayName }) {
     return () => window.removeEventListener('resize', handleResize);
     // eslint-disable-next-line
   }, []);
+
+  function clickPost() {
+    history.push(`/p/${postId}/`, {
+      userName,
+      option: location.state.option,
+      photoURL: postUserInfo?.photoURL,
+      displayName: postUserInfo?.displayName,
+    });
+  }
+
+  function handleResize() {
+    setImageWidth(divRef?.current?.clientWidth);
+  }
+
+  function handleLoad() {
+    setLoading(false);
+  }
 
   return (
     <S.SquarePost

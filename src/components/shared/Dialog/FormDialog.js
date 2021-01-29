@@ -25,10 +25,6 @@ export default function FormDialog() {
   };
 
   const clickEdit = () => {
-    console.log(text);
-
-    // update firebase bio
-
     db.collection('users')
       .doc(user.displayName)
       .update({
