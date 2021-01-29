@@ -11,7 +11,7 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ### **`Preview`**
 
-### Main page
+<center>Main page</center>
 
 ![Instagram clone main home](./src/readme/main.png)
 
