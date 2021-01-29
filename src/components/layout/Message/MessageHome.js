@@ -128,11 +128,8 @@ function MessageHome() {
   return (
     <>
       {loading && <RefreshLoader />}
-      {console.log('chatUsers>>>', chatUsers)}
-      <S.MessageHome>
-        {/* {console.log('chatUsers>>>', chatUsers)}
-        {console.log('user>>>', user)} */}
 
+      <S.MessageHome>
         <S.Box>
           <S.BoxLeft>
             <S.NameAndCreateNewMessageIcon>

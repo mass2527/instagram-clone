@@ -155,9 +155,6 @@ function LoginForm() {
 
   return (
     <S.LoginForm>
-      {/* {setInterval(() => {
-        console.log(users);
-      }, 1000)} */}
       <S.LoginBox>
         <S.Logo
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.pngs"

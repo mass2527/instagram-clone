@@ -12,6 +12,7 @@ const S = {
     box-sizing: border-box;
     display: flex;
     align-items: center;
+
     :hover {
       background-color: ${({ hasUser }) => hasUser && 'rgba(0, 0, 0, 0.03)'};
       cursor: ${({ hasUser }) => hasUser && 'pointer'};
@@ -118,9 +119,6 @@ function ChatUserRow({ userName, changeChatUser }) {
         changeChatUser();
       }}
     >
-      {/* {console.log(userName)}
-      {console.log('lastMessage>>>', lastMessage)} */}
-      {/* {console.log('user>>>', user)} */}
       <S.RowLeft>
         <S.Circle>
           {userName && (

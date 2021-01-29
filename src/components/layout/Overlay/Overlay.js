@@ -178,37 +178,6 @@ function Overlay() {
   const [scrollY, setScrollY] = useState(window.scrollY);
   const location = useLocation();
 
-  function loadMoreComments() {
-    setCurrentPage((crr) => crr + 1);
-  }
-
-  function goBackToFormerLocation() {
-    document.querySelector('body').style.overflowY = 'scroll';
-    history.goBack();
-  }
-
-  function pressESC(e) {
-    if (e.keyCode !== 27) return;
-    goBackToFormerLocation();
-  }
-
-  function clickOverlay(e) {
-    if (e.target !== overlayRef.current) return;
-    goBackToFormerLocation();
-  }
-
-  function clickCloseButton(e) {
-    goBackToFormerLocation();
-  }
-
-  function handleResize() {
-    setScrollY(window.scrollY);
-  }
-
-  function handlePopState() {
-    document.querySelector('body').style.overflowY = 'scroll';
-  }
-
   useEffect(() => {
     document.querySelector('body').style.overflowY = 'hidden';
 
@@ -254,6 +223,37 @@ function Overlay() {
       userName: postInfo.displayName,
     });
 
+    document.querySelector('body').style.overflowY = 'scroll';
+  }
+
+  function loadMoreComments() {
+    setCurrentPage((crr) => crr + 1);
+  }
+
+  function goBackToFormerLocation() {
+    document.querySelector('body').style.overflowY = 'scroll';
+    history.goBack();
+  }
+
+  function pressESC(e) {
+    if (e.keyCode !== 27) return;
+    goBackToFormerLocation();
+  }
+
+  function clickOverlay(e) {
+    if (e.target !== overlayRef.current) return;
+    goBackToFormerLocation();
+  }
+
+  function clickCloseButton(e) {
+    goBackToFormerLocation();
+  }
+
+  function handleResize() {
+    setScrollY(window.scrollY);
+  }
+
+  function handlePopState() {
     document.querySelector('body').style.overflowY = 'scroll';
   }
 

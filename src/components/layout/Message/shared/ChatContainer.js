@@ -200,9 +200,6 @@ function ChatContainer({ chatUsers }) {
 
   return (
     <S.ChatConatiner>
-      {/* {console.log(messages)} */}
-      {/* {console.log('messages>>>', messages)} */}
-      {/* {console.log('chatUser>>>', chatUser)} */}
       <S.Header>
         <UserImageAndName
           photoURL={photoURL}
@@ -213,9 +210,6 @@ function ChatContainer({ chatUsers }) {
         />
       </S.Header>
 
-      {/* {console.log('user>>>', user)} */}
-      {/* {console.log('chatUser>>>', chatUser)} */}
-      {/* {console.log('messages>>>', messages)} */}
       <S.Messages ref={messagesRef}>
         {messages.map(({ id, message, userName }, index) => (
           <S.MessageRow key={id} isMyMessage={userName === user.displayName}>

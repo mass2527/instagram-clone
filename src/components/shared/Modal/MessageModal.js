@@ -160,7 +160,10 @@ export default function MessageModal() {
         const users = snapshot.docs.filter(
           (doc) => doc.data().displayName.toLowerCase().includes(e.target.value) === true
         );
-        setUserList(users.map((user) => user.data()));
+        const usersExceptMe = users.filter(
+          (eachUser) => eachUser.data().displayName.toLowerCase() !== user.displayName.toLowerCase()
+        );
+        setUserList(usersExceptMe.map((user) => user.data()));
       });
     }, 100);
   };

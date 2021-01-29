@@ -9,8 +9,6 @@ import { useHistory } from 'react-router-dom';
 import CommentSender from '../../../shared/Comment/CommentSender';
 import PostImageLoader from '../../../shared/Loader/PostImageLoader';
 import PostIcons from '../../../shared/PostIcons/PostIcons';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import PostOptionDialog from '../../../shared/Dialog/PostOptionDialog';
 
 const S = {
   Post: styled.div`
@@ -125,7 +123,6 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
   const imageRef = useRef(null);
   const history = useHistory();
   const [width, setWidth] = useState(window.innerWidth);
-  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     db.collection('posts')
@@ -203,9 +200,7 @@ function Post({ caption, displayName, imageURL, postId, timestamp, title, userId
             <S.Title>{title}</S.Title>
           </S.Info>
         </S.UserImageAndInfo>
-        {displayName === user.displayName && <MoreHorizIcon onClick={() => setOpenDialog(true)} />}
       </S.Header>
-      {openDialog && <PostOptionDialog reset={() => setOpenDialog(false)} postId={postId} />}
 
       {postImageLoading && <PostImageLoader />}
       <S.ImageContainer>
