@@ -12,5 +12,4 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ### **`Preview`**
 
-<p align="center"><img src="./src/readme/instagramPosts.png"></p>
-
+<p align="center"><img src="./src/readme/main.png"></p>
