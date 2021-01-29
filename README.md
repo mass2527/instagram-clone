@@ -9,7 +9,8 @@ This is my [**LinkedIn**](https://www.linkedin.com/in/dh-kim-733227200) feel fre
 
 Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or you can just watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_reactjs-instagram-linkedin-activity-6759438400706764800-bNwH)
 
-### **`Preview`**
+
+<p align="center">### **`Preview`**</p>
 
 >Main page
 
