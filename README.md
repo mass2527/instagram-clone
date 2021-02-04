@@ -24,7 +24,7 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 [4. What did i learn](#What-did-i-learn)
 
----
+
 
 <br/>
 
@@ -88,17 +88,17 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ### **What did i learn**
 
-1. learned importance of organized folder structure, clear variable name.
+`1. learned importance of organized folder structure, clear variable name.`
 
    As the size of app grows, rewriting code is imperative since i need to fix my code whenever i found a bug.  
    In this kind of moment, organized folder structure and clear variable name make me easily find the file.
 
-2. learned importance of code refactoring.
+`2. learned importance of code refactoring.`
 
    Found out my brain works better when i am watcing clean code.  
    However, when i was trying to write some code on messy code, my brain was fried and don't want to think anymore.  
    Since then, i did code refactoring as much as i can.
 
-3. learned importance of DB structure.
+`3. learned importance of DB structure.`
 
    As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
