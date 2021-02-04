@@ -1,4 +1,5 @@
-# **Instagram clone ![instagram](https://logodix.com/logo/14586.png)**
+# **Instagram clone**
+![instagram](https://logodix.com/logo/14586.png)
 ![instagram](https://logodix.com/logo/14581.jpg)
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
