@@ -49,7 +49,7 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 - `Can watch user's followings and follwers`  
 - `If you are owner of that account, you can edit profile image and introduction`
 
-![profile page](scr/readme/chrome_EmPo4qcPBd.png)
+![profile page](src/readme/chrome_EmPo4qcPBd.png)
 
 #### **DM page**
 
