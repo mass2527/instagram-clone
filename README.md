@@ -1,4 +1,4 @@
-# **Instagram clone ![instagram]( "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1ScxBQ0wM5pyJEKbMXQZYoSGy0p96mo3P7g&usqp=CAU")**
+# **Instagram clone ![instagram](https://logodix.com/logo/14586.png)**
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
 You can create post, add a comment, follow another person, send direct message and much more.
