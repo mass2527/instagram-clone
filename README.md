@@ -1,4 +1,4 @@
-# **Instagram clone <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" width="30">**
+# **Instagram clone** <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" width="30">
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
 
@@ -10,12 +10,9 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ## Index
 
-[1. Why did i make](#Why-did-i-make)
-
-[2. Developement stack](#Developement-stack)
-
-[3. Detail](#Detail)
-
+[1. Why did i make](#Why-did-i-make)  
+[2. Developement stack](#Developement-stack)  
+[3. Detail](#Detail)  
 [4. What did i learn](#What-did-i-learn)
 
 <br/>
@@ -70,6 +67,15 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ![DM page](src/readme/chrome_2dGBqYMLRC.png)
 
+<br/>
+
+#### **Responsive**
+
+- `Fully responsive layout for mobile user`
+
+![responsive main](src/readme/chrome_9VMyuV31PM.png)
+![responsive profile](src/readme/chrome_6afXqSTh3z.png)
+![responsive dm](src/readme/chrome_qZ973cfUVY.png)
 <br/>
 
 ### **What did i learn**
