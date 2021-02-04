@@ -1,6 +1,6 @@
 # **Instagram clone**
 ![instagram](https://logodix.com/logo/14586.png)
-![instagram](https://logodix.com/logo/14581.jpg)
+
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
 You can create post, add a comment, follow another person, send direct message and much more.
