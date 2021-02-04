@@ -63,7 +63,7 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 #### **DM page**
 
-- `Can search user and start conversation`
+- `Can search user and start conversation in realtime`
 
 ![DM page](src/readme/chrome_2dGBqYMLRC.png)
 
