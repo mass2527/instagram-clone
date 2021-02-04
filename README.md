@@ -51,6 +51,10 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 <br/>
 
+![modal](src/readme/chrome_PzbQGseM3u.png)
+
+<br/>
+
 #### **Profile page**
 
 - `Can watch all the posts that user has created and posts that user has liked.`
