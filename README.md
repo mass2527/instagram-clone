@@ -1,6 +1,10 @@
 # **Instagram clone**
 
-![instagram](https://logodix.com/logo/14586.png)
+<center>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" width="80">
+</center>
+
+<br/>
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
 
@@ -8,23 +12,36 @@ You can create post, add a comment, follow a user or even send direct message.
 
 Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or you can just watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_reactjs-instagram-linkedin-activity-6759438400706764800-bNwH)
 
+<br/>
+
 ## Index
 
-[1. Why did i make?](#Why-did-i-make?)
+[1. Why did i make](#Why-did-i-make)
 
 [2. Developement stack](#Developement-stack)
 
 [3. Detail](#Detail)
 
-[4. What did i learn?](#What-did-i-learn?)
+[4. What did i learn](#What-did-i-learn)
 
-### **Why did i make?**
+---
+
+<br/>
+
+### **Why did i make**
+
+<br/>
 
 - To improve reactjs skills
 - To get familiar with CRUD operations
 - To get familiar with redux
 
+<br/>
+
 ### **Developement stack**
+
+<br/>
+<br/>
 
 <div>
 <img src="https://www.acwebdev.tech/static/media/react-icon.52610ecf.png" width="100">
@@ -33,30 +50,43 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 <img src="https://www.acwebdev.tech/static/media/firebase-icon.8896e25c.png" width="100">
 </div>
 
+<br/>
+<br/>
+
 ### **Detail**
 
 #### **Main page**
 
-- `Shows all user's posts stored in the database (infinite scrolling)`  
+- `Shows all user's posts stored in the database (infinite scrolling)`
 - `Can like the post, add a comment, click the post for more detail and even follow other users.`
 - `Can search all users`
 
 ![main page](src/readme/chrome_lbku2Ez2B5.png)
 
+<br/>
+<br/>
+
 #### **Profile page**
 
-- `Can watch all the posts that user has created and posts that user has liked.`  
-- `Can watch user's followings and follwers`  
+- `Can watch all the posts that user has created and posts that user has liked.`
+- `Can watch user's followings and follwers`
 - `If you are owner of that account, you can edit profile image and introduction`
 
 ![profile page](src/readme/chrome_EmPo4qcPBd.png)
+
+<br/>
+<br/>
 
 #### **DM page**
 
 - `Can search user and start conversation`
 
 ![DM page](src/readme/chrome_2dGBqYMLRC.png)
-### **What did i learn?**
+
+<br/>
+<br/>
+
+### **What did i learn**
 
 1. learned importance of organized folder structure, clear variable name.
 
