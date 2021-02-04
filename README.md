@@ -1,4 +1,4 @@
-# **Instagram clone**
+# **Instagram clone ![instagram](http://assets.stickpng.com/images/580b57fcd9996e24bc43c521.png "instagram"**
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
 You can create post, add a comment, follow another person, send direct message and much more.
