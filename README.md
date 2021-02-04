@@ -1,10 +1,4 @@
-# **Instagram clone**
-
-<center>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" width="80">
-</center>
-
-<br/>
+# **Instagram clone <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" width="30">**
 
 This is a clone project of [**Instagram**](https://instagram.com) made with ReactJS.
 
@@ -24,13 +18,9 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 [4. What did i learn](#What-did-i-learn)
 
-
-
 <br/>
 
 ### **Why did i make**
-
-<br/>
 
 - To improve reactjs skills
 - To get familiar with CRUD operations
@@ -40,7 +30,6 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ### **Developement stack**
 
-<br/>
 <br/>
 
 <div>
@@ -64,7 +53,6 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 ![main page](src/readme/chrome_lbku2Ez2B5.png)
 
 <br/>
-<br/>
 
 #### **Profile page**
 
@@ -75,7 +63,6 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 ![profile page](src/readme/chrome_EmPo4qcPBd.png)
 
 <br/>
-<br/>
 
 #### **DM page**
 
@@ -84,21 +71,20 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 ![DM page](src/readme/chrome_2dGBqYMLRC.png)
 
 <br/>
-<br/>
 
 ### **What did i learn**
 
 `1. learned importance of organized folder structure, clear variable name.`
 
-   As the size of app grows, rewriting code is imperative since i need to fix my code whenever i found a bug.  
-   In this kind of moment, organized folder structure and clear variable name make me easily find the file.
+As the size of app grows, rewriting code is imperative since i need to fix my code whenever i found a bug.  
+ In this kind of moment, organized folder structure and clear variable name make me easily find the file.
 
 `2. learned importance of code refactoring.`
 
-   Found out my brain works better when i am watcing clean code.  
-   However, when i was trying to write some code on messy code, my brain was fried and don't want to think anymore.  
-   Since then, i did code refactoring as much as i can.
+Found out my brain works better when i am watcing clean code.  
+ However, when i was trying to write some code on messy code, my brain was fried and don't want to think anymore.  
+ Since then, i did code refactoring as much as i can.
 
 `3. learned importance of DB structure.`
 
-   As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
+As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
