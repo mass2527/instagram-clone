@@ -37,11 +37,14 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 #### **Main page**
 
-`Shows all user's posts stored in the database (infinite scrolling) You can like the post, add a comment, click the post for more detail and even follow other users.`
+`Shows all user's posts stored in the database (infinite scrolling)`  
+`You can like the post, add a comment, click the post for more detail and even follow other users.`
 
 ![main page](src/readme/chrome_lbku2Ez2B5.png)
 
-`Can watch all the posts that user has created and posts that user has liked. Also If you are owner of that account, you can edit profile image and introduction`
+`Can watch all the posts that user has created and posts that user has liked.`  
+`Can watch user's followings and follwers`  
+`If you are owner of that account, you can edit profile image and introduction`
 
 ![profile page](scr/readme/chrome_EmPo4qcPBd.png)
 
