@@ -8,7 +8,7 @@ You can create post, add a comment, follow a user or even send direct message.
 
 Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or you can just watch [**video**](https://www.linkedin.com/posts/dh-kim-733227200_reactjs-instagram-linkedin-activity-6759438400706764800-bNwH)
 
-## **Index**
+## Index
 
 [1. Why did i make?](#Why-did-i-make?)
 
@@ -18,13 +18,13 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 [4. What did i learn?](#What-did-i-learn?)
 
-### Why did i make?
+### **Why did i make?**
 
 - To improve reactjs skills
 - To get familiar with CRUD operations
 - To get familiar with redux
 
-### Developement stack
+### **Developement stack**
 
 <div>
 <img src="https://www.acwebdev.tech/static/media/react-icon.52610ecf.png" width="100">
@@ -33,26 +33,33 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 <img src="https://www.acwebdev.tech/static/media/firebase-icon.8896e25c.png" width="100">
 </div>
 
-### Detail
-### **`Main page`**
-Shows all user's posts stored in the database (infinite scrolling)  
-You can like the post, add a comment, click the post for more detail and even follow other users.
+### **Detail**
+
+#### **Main page**
+
+`Shows all user's posts stored in the database (infinite scrolling) You can like the post, add a comment, click the post for more detail and even follow other users.`
 
 ![main page](src/readme/chrome_lbku2Ez2B5.png)
 
-### What did i learn?
+`Can watch all the posts that user has created and posts that user has liked. Also If you are owner of that account, you can edit profile image and introduction`
+
+![profile page](scr/readme/chrome_EmPo4qcPBd.png)
+
+### **`Profile page`**
+
+### **What did i learn?**
 
 1. learned importance of organized folder structure, clear variable name.
 
-    As the size of app grows, rewriting code is imperative since i need to fix my code whenever i found a bug.  
-    In this kind of moment, organized folder structure and clear variable name make me easily find the file.
+   As the size of app grows, rewriting code is imperative since i need to fix my code whenever i found a bug.  
+   In this kind of moment, organized folder structure and clear variable name make me easily find the file.
 
 2. learned importance of code refactoring.
 
-    Found out my brain works better when i am watcing clean code.  
-    However, when i was trying to write some code on messy code, my brain was fried and don't want to think anymore.  
-    Since then, i did code refactoring as much as i can.
+   Found out my brain works better when i am watcing clean code.  
+   However, when i was trying to write some code on messy code, my brain was fried and don't want to think anymore.  
+   Since then, i did code refactoring as much as i can.
 
 3. learned importance of DB structure.
 
-    As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
+   As i need to store lots of data like message, user and post, it was really important to have well organized DB strutures so that i can easily read, update or delete it.
