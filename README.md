@@ -10,19 +10,19 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ## **Index**
 
-[1. Why did i make this clone?](#Why-did-i-make-this-clone?)
+[1. Why did i make?](#Why-did-i-make?)
 
 [2. Developement stack](#Developement-stack)
 
 [3. Detail](#Detail)
 
-[4. What did i learn from this project?](#What-did-i-learn-from-this-project?)
+[4. What did i learn?](#What-did-i-learn?)
 
-### Why did i make this clone?
+### Why did i make?
 
 - To improve reactjs skills
 - To get familiar with CRUD operations
-- To learn how to user redux
+- To get familiar with redux
 
 ### Developement stack
 
@@ -35,9 +35,9 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 
 ### Detail
 ### **`Main page`**
+![main page](readme/chrome_lbku2Ez2B5.png)
 
-
-### What did i learn from this project?
+### What did i learn?
 
 1. learned importance of organized folder structure, clear variable name.
 
