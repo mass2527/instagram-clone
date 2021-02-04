@@ -74,7 +74,9 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
 - `Fully responsive layout for mobile user`
 
 ![responsive main](src/readme/chrome_9VMyuV31PM.png)
+<br/>
 ![responsive profile](src/readme/chrome_6afXqSTh3z.png)
+<br/>
 ![responsive dm](src/readme/chrome_qZ973cfUVY.png)
 <br/>
 
