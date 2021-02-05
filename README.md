@@ -93,20 +93,6 @@ Click [**here**](https://instagram-clone-c3621.web.app/) to see the live demo or
  <br/>
  <br/>
 
-
-
-
-
-![responsive main](src/readme/chrome_9VMyuV31PM.png)
-<br/>
-<br/>
-![responsive profile](src/readme/chrome_6afXqSTh3z.png)
-<br/>
-<br/>
-![responsive dm](src/readme/chrome_qZ973cfUVY.png)
-<br/>
-<br/>
-
 ### **What did i learn**
 
 `1. learned importance of organized folder structure, clear variable name.`
